@@ -707,7 +707,7 @@ async function runModel() {
 
 // ── CLIENT-SIDE FALLBACK MODEL ────────────────────────────────────────────────
 function runModelLocal(a) {
-  const life=a.life, cfs=[-Math.max(a.capex-a.loan-a.fmv*a.itc,1000)];
+  const life=a.life, itc_proc=a.fmv*a.itc, pref_eq=a.capex*0.255, equity_in=Math.max(a.capex-a.loan-itc_proc-pref_eq, a.capex*0.057), cfs=[-equity_in];
   const years=[];
   for(let i=0;i<life;i++){
     const yr=i+1;
@@ -726,10 +726,10 @@ function runModelLocal(a) {
     cfs.push(cfads);
   }
   const irr=calcIRR(cfs);
-  const equity_in=Math.abs(cfs[0]);
-  const npv=cfs.slice(1).reduce((s,c,i)=>s+c/Math.pow(1+a.discount,i+1),0)-equity_in;
+  const eq_in=Math.abs(cfs[0]);
+  const npv=cfs.slice(1).reduce((s,c,i)=>s+c/Math.pow(1+a.discount,i+1),0)-eq_in;
   const min_dscr=Math.min(...years.filter(y=>y.ds>0).map(y=>y.dscr));
-  const payback=years.find(y=>cfs.slice(1,y.year+1).reduce((s,c)=>s+c,0)>equity_in)?.year;
+  const payback=years.find(y=>cfs.slice(1,y.year+1).reduce((s,c)=>s+c,0)>eq_inn)?.year;
   const flags=runFlagsLocal(a,irr,min_dscr);
   return {irr:irr?Math.round(irr*10000)/100:null,npv:Math.round(npv),min_dscr:Math.round(min_dscr*100)/100,payback,equity_in:Math.round(equity_in),itc_proceeds:Math.round(a.fmv*a.itc),years,flags};
 }
