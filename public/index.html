@@ -35,6 +35,18 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 .deal-selector label{font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px}
 .deal-select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);color:#fff;font-family:var(--sans);font-size:12px;padding:7px 10px;cursor:pointer;outline:none}
 .deal-select option{background:var(--navy2);color:#fff}
+.asset-tabs{padding:8px 10px;border-bottom:1px solid var(--line)}
+.asset-tabs-label{font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.asset-tab-list{display:flex;flex-direction:column;gap:1px}
+.asset-tab{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:var(--r);cursor:pointer;font-size:11.5px;color:rgba(255,255,255,.35);transition:all .15s;border:none;background:none;width:100%;text-align:left}
+.asset-tab:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.6)}
+.asset-tab.active{background:rgba(74,158,240,.12);color:#4A9EF0;font-weight:500}
+.asset-tab .tab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.15)}
+.asset-tab.active .tab-dot{background:#4A9EF0}
+.asset-tab.portfolio{color:rgba(255,255,255,.5);font-weight:500}
+.asset-tab.portfolio.active{background:rgba(255,255,255,.08);color:#fff}
+.asset-badge{font-size:9px;padding:1px 6px;border-radius:10px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.3);margin-left:auto}
+.asset-tab.active .asset-badge{background:rgba(74,158,240,.2);color:#4A9EF0}
 .nav{padding:8px 10px;flex:1;overflow-y:auto}
 .nav-section{font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.08em;padding:10px 10px 4px}
 .nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r);cursor:pointer;font-size:12.5px;color:rgba(255,255,255,.4);transition:all .15s;border:none;background:none;width:100%;text-align:left;margin-bottom:1px}
@@ -174,6 +186,10 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
       <option value="bess">Project Genesis (DG BESS)</option>
       <option value="bsu">BSU Operating Portfolio</option>
     </select>
+  </div>
+  <div class="asset-tabs" id="asset-tabs">
+    <div class="asset-tabs-label">Assets</div>
+    <div class="asset-tab-list" id="asset-tab-list"></div>
   </div>
   <nav class="nav">
     <div class="nav-section">Workflow</div>
@@ -413,131 +429,193 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 const DEALS = {
   yarotek: {
     name: 'Yarotek Portfolio',
-    meta: 'Utility-Scale Solar · 253 MWdc · Duke Energy Carolinas · NC',
+    meta: 'Utility-Scale Solar · 253 MWdc · Duke Energy Carolinas · NC · COD Q4 2029',
     type: 'solar', status: 'Late-Stage Development',
+    assets: [
+      {id:'portfolio', name:'Portfolio Summary', type:'summary'},
+      {id:'cheyenne', name:'Cheyenne River Ranch', mwdc:253, yield_kwh:1990, status:'active'},
+      {id:'nye', name:'NYE', mwdc:60, yield_kwh:2023, status:'development'},
+      {id:'lewis', name:'Lewis', mwdc:20, yield_kwh:1950, status:'development'},
+      {id:'gardner', name:'Gardner', mwdc:18, yield_kwh:1960, status:'development'},
+      {id:'canton', name:'Canton', mwdc:22, yield_kwh:1940, status:'development'},
+      {id:'hatcher', name:'Hatcher', mwdc:19, yield_kwh:1970, status:'development'},
+      {id:'red_oak', name:'Red Oak', mwdc:21, yield_kwh:1955, status:'development'},
+      {id:'upton', name:'Upton Farms', mwdc:17, yield_kwh:1980, status:'development'},
+      {id:'bentley', name:'Bentley Farms', mwdc:23, yield_kwh:1945, status:'development'},
+      {id:'kitchen', name:'Kitchen Farms', mwdc:16, yield_kwh:1990, status:'development'},
+      {id:'samra', name:'Samra', mwdc:18, yield_kwh:1965, status:'development'},
+      {id:'joann', name:'Jo Ann Scarlett Smith', mwdc:15, yield_kwh:1975, status:'development'},
+      {id:'shalimar', name:'Shalimar Farms', mwdc:20, yield_kwh:1960, status:'development'},
+      {id:'ravi', name:'Ravi Reddi / Regency Farms', mwdc:17, yield_kwh:1970, status:'development'},
+    ],
     capital_stack: {
-      'TEBL / TRABL': [123980, null],
-      'Back Leverage': [144700, null],
-      'Preferred Equity': [99754, null],
-      'Cash Equity': [22388, null],
+      'TEBL / TRABL':    [123980, null],
+      'Back Leverage':   [144700, null],
+      'Preferred Equity':[99754,  null],
+      'Cash Equity':     [22388,  null],
     },
     params: {
-      'Asset Type': 'Utility-Scale Solar',
+      'Asset Type':    'Utility-Scale Solar',
       'Grid Operator': 'Duke Energy Carolinas',
-      'Location': 'Hoke & Robeson Co., NC',
-      'COD Target': 'Q1 2030',
-      'ITC Rate': '40%',
-      'Safe Harbor': 'Confirmed',
-      'Hurdle Rate': '10.0%',
+      'Location':      'Hoke & Robeson Co., NC',
+      'COD Target':    'Q4 2029',
+      'NTP Date':      'Sep 2028',
+      'Asset Life':    '35 years',
+      'ITC Rate':      '40% (30% base + 10% DC adder)',
+      'Safe Harbor':   'Confirmed',
+      'PPA Tenor':     '25 years',
+      'Hurdle Rate':   '10.0%',
     },
     a: {
-      mwdc:82, yield_kwh:1990, avail:0.985, degrad:0.004,
+      mwdc:253, yield_kwh:1990, avail:0.985, degrad:0.004,
       curtail:0.02, life:35,
-      ppa_price:59, ppa_esc:0.0, ppa_tenor:5,
+      ppa_price:59, ppa_esc:0.0, ppa_tenor:25,
       merch_price:65, merch_esc:0.015,
-      capex:368432, opex_base:5800, opex_esc:0.02,
-      loan:144700, rate:0.085, tenor:20,
-      itc:0.40, fmv:440000, discount:0.08,
+      capex:367873, opex_base:8200, opex_esc:0.023,
+      loan:175000, rate:0.0775, tenor:20,
+      itc:0.40, fmv:475020, discount:0.08,
       soiling_loss:0.015, contingency_pct:0.035,
       dscr_covenant:1.25, hurdle_rate:10.0, safe_harbor:true,
     },
     suggestions: [
       'Change merchant price to $70/MWh',
-      'What happens if degradation is 0.5%?',
-      'Increase OPEX by 15%',
+      'What happens if degradation is 0.5%/yr?',
+      'Increase OPEX by 15% across all years',
       'Run bear case: merchant price -20%',
     ]
   },
   foley: {
     name: 'Foley Solar (LUIS)',
-    meta: 'Utility-Scale Solar · 82 MWdc · PJM · Mid-Atlantic',
-    type: 'solar', status: 'Development',
+    meta: 'Utility-Scale Solar · 106 MWdc · SERC · Baldwin County, AL · COD Q1 2026',
+    type: 'solar', status: 'Near-Term Operating',
+    assets: [
+      {id:'portfolio', name:'Portfolio Summary', type:'summary'},
+      {id:'foley_main', name:'Foley Solar', mwdc:106, yield_kwh:1720, status:'active'},
+    ],
     capital_stack: {
-      'Term Loan': [35000, null],
-      'Tax Equity': [42000, null],
-      'Sponsor Equity': [21000, null],
+      'Tax Equity':    [65000, null],
+      'Permanent Debt':[65000, null],
+      'Sponsor Equity':[30734, null],
     },
     params: {
-      'Asset Type': 'Utility-Scale Solar',
-      'Grid Operator': 'PJM',
-      'Location': 'Mid-Atlantic',
-      'COD Target': 'Q2 2027',
-      'ITC Rate': '40%',
-      'TE Structure': 'Partnership Flip',
-      'Hurdle Rate': '10.0%',
+      'Asset Type':    'Utility-Scale Solar',
+      'Grid Operator': 'SERC',
+      'Location':      'Baldwin County, Alabama',
+      'COD Target':    'Q1 2026',
+      'NTP Date':      'Nov 2025',
+      'Asset Life':    '40 years',
+      'ITC Rate':      '40%',
+      'TE Structure':  'Partnership Flip',
+      'PPA Tenor':     '17 years',
+      'Hurdle Rate':   '10.0%',
     },
     a: {
-      mwdc:82, yield_kwh:1650, avail:0.985, degrad:0.004,
-      curtail:0.02, life:35,
-      ppa_price:55, ppa_esc:0.01, ppa_tenor:12,
-      merch_price:60, merch_esc:0.015,
-      capex:98000, opex_base:1650, opex_esc:0.02,
-      loan:35000, rate:0.082, tenor:18,
-      itc:0.40, fmv:125000, discount:0.08,
+      mwdc:106, yield_kwh:1720, avail:0.98, degrad:0.004,
+      curtail:0.02, life:40,
+      ppa_price:52, ppa_esc:0.01, ppa_tenor:17,
+      merch_price:58, merch_esc:0.015,
+      capex:160734, opex_base:2800, opex_esc:0.02,
+      loan:65000, rate:0.078, tenor:18,
+      itc:0.40, fmv:205000, discount:0.08,
       soiling_loss:0.02, contingency_pct:0.05,
       dscr_covenant:1.25, hurdle_rate:10.0, safe_harbor:true,
     },
     suggestions: [
-      'Change PPA price to $58/MWh',
-      'What if loan tenor is 20 years?',
-      'Increase contingency to 7.5%',
-      'What is the IRR sensitivity to yield?',
+      'What if PPA price drops to $48/MWh?',
+      'Model interest rate at 9.0%',
+      'What happens at P90 yield?',
+      'Show IRR sensitivity to CapEx +10%',
     ]
   },
   bess: {
     name: 'Project Genesis (DG BESS)',
-    meta: 'Battery Storage · 5 MW / 20 MWh · NY ISO · 4 Sites',
+    meta: 'Battery Storage · 5 MW / 20 MWh · NY ISO · 4 Sites · COD Nov 2028',
     type: 'bess', status: 'Mid-Stage Development',
+    assets: [
+      {id:'portfolio', name:'Portfolio Summary', type:'summary'},
+      {id:'bronx', name:'Bronx', mw:1.25, mwh:5, status:'development'},
+      {id:'peekskill', name:'Peekskill', mw:1.25, mwh:5, status:'development'},
+      {id:'kitchen_bess', name:'Kitchen Farms', mw:1.25, mwh:5, status:'active'},
+      {id:'bracero', name:'Bracero Pecan', mw:1.25, mwh:5, status:'development'},
+    ],
     capital_stack: {
-      'TEBL / TRABL': [3524, null],
-      'Back Leverage': [4470, null],
-      'Preferred Equity': [1885, null],
-      'Cash Equity': [1743, null],
+      'TEBL / TRABL':    [3524,  null],
+      'Back Leverage':   [4470,  null],
+      'Preferred Equity':[1885,  null],
+      'Cash Equity':     [1743,  null],
     },
     params: {
-      'Asset Type': 'Battery Storage (BESS)',
+      'Asset Type':    'Battery Energy Storage (BESS)',
       'Grid Operator': 'NY ISO',
-      'Location': 'New York — 4 Sites',
-      'Duration': '4 hours',
-      'COD Target': 'Nov 2028',
-      'ITC Rate': '40%',
-      'IA Status': '⚠ Pending',
+      'Location':      'New York — 4 Sites',
+      'Active Case':   'Kitchen Farms',
+      'Duration':      '4 hours (20 MWh total)',
+      'COD Target':    'Nov 2028',
+      'NTP Date':      'Feb 2028',
+      'Asset Life':    '30 years',
+      'ITC Rate':      '40% (30% base + 10% DC adder)',
+      'Interest Rate': 'SOFR + 5.50%',
+      'IA Status':     '⚠ Pending',
     },
     a: {
       mwdc:5, yield_kwh:1460, avail:0.97, degrad:0.025,
-      curtail:0.0, life:20,
+      curtail:0.0, life:30,
       ppa_price:85, ppa_esc:0.02, ppa_tenor:7,
       merch_price:90, merch_esc:0.02,
-      capex:11188, opex_base:380, opex_esc:0.02,
+      capex:11148, opex_base:380, opex_esc:0.02,
       loan:4470, rate:0.105, tenor:7,
-      itc:0.40, fmv:14000, discount:0.08,
+      itc:0.40, fmv:13500, discount:0.08,
       soiling_loss:0.0, contingency_pct:0.05,
       dscr_covenant:1.25, hurdle_rate:10.0, safe_harbor:true,
     },
     suggestions: [
       'What if interest rate drops to 8.5%?',
-      'Change revenue to $95/MWh',
+      'Change revenue assumption to $95/MWh',
       'What is DSCR if OPEX increases 20%?',
-      'Run downside: revenue -15%',
+      'Model IA execution delay of 6 months',
     ]
   },
   bsu: {
     name: 'BSU Operating Portfolio',
-    meta: 'C&I Solar · ~16.6 MWdc · CAISO · 20+ Sites · California',
+    meta: 'C&I Solar · ~16.6 MWdc · CAISO · 20 Sites · California · Operating',
     type: 'solar', status: 'Operating',
+    assets: [
+      {id:'portfolio', name:'Portfolio Summary', type:'summary'},
+      {id:'bressi', name:'Bressi', kw:270, status:'operating'},
+      {id:'broadway', name:'Broadway', kw:438, status:'operating'},
+      {id:'esplanade', name:'Esplanade', kw:1557, status:'operating'},
+      {id:'hanford', name:'Hanford', kw:3804, status:'operating'},
+      {id:'boronda', name:'Boronda', kw:900, status:'operating'},
+      {id:'sandimas', name:'San Dimas', kw:576, status:'operating'},
+      {id:'clovis', name:'Clovis', kw:480, status:'operating'},
+      {id:'palmdale', name:'Palmdale', kw:1051, status:'operating'},
+      {id:'blueOaks', name:'Blue Oaks', kw:1530, status:'operating'},
+      {id:'oceanview', name:'Ocean View', kw:474, status:'operating'},
+      {id:'vail', name:'Vail', kw:605, status:'operating'},
+      {id:'puente', name:'Puente', kw:1428, status:'operating'},
+      {id:'peco', name:'PECO', kw:360, status:'operating'},
+      {id:'winery', name:'Winery', kw:300, status:'operating'},
+      {id:'ymca', name:'YMCA', kw:213, status:'operating'},
+      {id:'orland', name:'Orland', kw:580, status:'operating'},
+      {id:'colusa', name:'Colusa', kw:570, status:'operating'},
+      {id:'carmen', name:'Carmen', kw:542, status:'operating'},
+      {id:'ftc', name:'FTC', kw:641, status:'operating'},
+    ],
     capital_stack: {
-      'Term Loan': [18000, null],
-      'Tax Equity': [14000, null],
-      'Sponsor Equity': [13000, null],
+      'Term Loan':     [18000, null],
+      'Tax Equity':    [14000, null],
+      'Sponsor Equity':[13000, null],
     },
     params: {
-      'Asset Type': 'C&I Solar Portfolio',
-      'Grid Operator': 'CAISO',
-      'Location': 'California — 20+ sites',
-      'Status': 'Operating',
-      'Avg Availability': '98.7%',
+      'Asset Type':      'C&I Solar Portfolio',
+      'Grid Operator':   'CAISO',
+      'Location':        'California — 20 sites',
+      'Status':          'Operating',
+      'Total Installed': '16,592 kWdc',
+      'Avg Availability':'98.7%',
       'P50 Performance': '+2.1% YTD',
-      'ITC Rate': '30%',
+      'ITC Rate':        '30%',
+      'Hurdle Rate':     '9.0%',
     },
     a: {
       mwdc:16.6, yield_kwh:1850, avail:0.987, degrad:0.005,
@@ -551,10 +629,10 @@ const DEALS = {
       dscr_covenant:1.20, hurdle_rate:9.0, safe_harbor:true,
     },
     suggestions: [
-      'What is blended IRR across all sites?',
-      'Model 5% soiling increase in Year 3',
-      'What if 3 sites underperform P50 by 8%?',
+      'What is blended portfolio IRR?',
+      'Model 3 sites underperforming P50 by 8%',
       'Refinance scenario at SOFR+1.75%',
+      'What if degradation accelerates to 0.7%?',
     ]
   }
 };
@@ -563,6 +641,7 @@ const DEALS = {
 let curDeal = 'yarotek';
 let modelResult = null;
 let auditLog = [];
+let curAsset = 'portfolio';
 
 // ── NAVIGATION ───────────────────────────────────────────────────────────────
 const SCREENS = ['overview','assumptions','model','engineering','chat'];
@@ -643,6 +722,138 @@ function loadDeal(id) {
   document.getElementById('audit-log').innerHTML = '<div style="font-size:11px;color:var(--text3);padding:4px 0">No changes yet.</div>';
 
   runModel();
+  curAsset = 'portfolio';
+  buildAssetTabs(d);
+}
+
+function buildAssetTabs(d) {
+  const list = document.getElementById('asset-tab-list');
+  if (!d.assets || !d.assets.length) {
+    document.getElementById('asset-tabs').style.display = 'none';
+    return;
+  }
+  document.getElementById('asset-tabs').style.display = 'block';
+  list.innerHTML = d.assets.map(a => `
+    <button class="asset-tab ${a.type==='summary'?'portfolio':''} ${a.id===curAsset?'active':''}"
+      onclick="selectAsset('${a.id}')">
+      <span class="tab-dot"></span>
+      ${a.name}
+      ${a.kw ? `<span class="asset-badge">${(a.kw/1000).toFixed(1)} MW</span>` :
+        a.mwdc ? `<span class="asset-badge">${a.mwdc} MWdc</span>` :
+        a.mw ? `<span class="asset-badge">${a.mw} MW</span>` : ''}
+    </button>`).join('');
+}
+
+function selectAsset(id) {
+  curAsset = id;
+  const d = DEALS[curDeal];
+  // Update tab highlighting
+  document.querySelectorAll('.asset-tab').forEach(t => {
+    t.classList.toggle('active', t.getAttribute('onclick').includes(`'${id}'`));
+  });
+  const asset = d.assets.find(a => a.id === id);
+  if (!asset) return;
+  if (asset.type === 'summary') {
+    renderPortfolioSummary(d);
+  } else {
+    renderAssetView(asset, d);
+  }
+}
+
+function renderAssetView(asset, deal) {
+  // Update deal name and meta
+  document.getElementById('deal-name').textContent = asset.name;
+  const size = asset.mwdc ? `${asset.mwdc} MWdc` :
+               asset.mw ? `${asset.mw} MW / ${asset.mwh} MWh` :
+               asset.kw ? `${asset.kw} kWdc` : '';
+  document.getElementById('deal-meta').textContent =
+    `${deal.name} · ${size} · ${deal.params['Grid Operator']} · ${asset.status}`;
+
+  // Build asset-specific assumptions by scaling from portfolio
+  const scale = asset.mwdc ? asset.mwdc / deal.a.mwdc :
+                asset.mw ? asset.mw / deal.a.mwdc :
+                asset.kw ? (asset.kw/1000) / deal.a.mwdc : 1;
+  const assetAssumptions = {
+    ...deal.a,
+    mwdc: asset.mwdc || asset.mw || (asset.kw/1000) || deal.a.mwdc,
+    yield_kwh: asset.yield_kwh || deal.a.yield_kwh,
+    capex: Math.round(deal.a.capex * scale),
+    loan: Math.round(deal.a.loan * scale),
+    opex_base: Math.round(deal.a.opex_base * scale),
+    fmv: Math.round(deal.a.fmv * scale),
+  };
+
+  // Run model for this asset
+  const result = runModelLocal(assetAssumptions);
+  renderModel(result);
+
+  // Update capital stack for this asset
+  const total = Object.values(deal.capital_stack).reduce((s,[v])=>s+v,0);
+  document.getElementById('capstack-body').innerHTML =
+    Object.entries(deal.capital_stack).map(([k,[v]]) => {
+      const assetV = Math.round(v * scale);
+      return `<tr><td>${k}</td><td class="num">$${assetV.toLocaleString()}</td><td class="num">${(v/total*100).toFixed(1)}%</td></tr>`;
+    }).join('') +
+    `<tr class="tbl-total"><td class="bold">Asset Total</td><td class="num bold">$${Math.round(total*scale).toLocaleString()}</td><td class="num bold">—</td></tr>`;
+}
+
+function renderPortfolioSummary(deal) {
+  // Reset to full portfolio view
+  document.getElementById('deal-name').textContent = deal.name + ' — Portfolio Summary';
+  document.getElementById('deal-meta').textContent = deal.meta;
+
+  // Build portfolio summary table
+  const summaryRows = (deal.assets || []).filter(a => a.type !== 'summary').map(asset => {
+    const scale = asset.mwdc ? asset.mwdc / deal.a.mwdc :
+                  asset.mw ? asset.mw / deal.a.mwdc :
+                  asset.kw ? (asset.kw/1000) / deal.a.mwdc : 1;
+    const a = {
+      ...deal.a,
+      mwdc: asset.mwdc || asset.mw || (asset.kw/1000) || deal.a.mwdc,
+      yield_kwh: asset.yield_kwh || deal.a.yield_kwh,
+      capex: Math.round(deal.a.capex * scale),
+      loan: Math.round(deal.a.loan * scale),
+      opex_base: Math.round(deal.a.opex_base * scale),
+      fmv: Math.round(deal.a.fmv * scale),
+    };
+    const r = runModelLocal(a);
+    const size = asset.mwdc ? `${asset.mwdc} MWdc` :
+                 asset.mw ? `${asset.mw} MW` :
+                 asset.kw ? `${asset.kw} kW` : '—';
+    const irrColor = r.irr && r.irr >= deal.a.hurdle_rate ? 'mv-green' : 'mv-red';
+    return `<tr>
+      <td class="bold">${asset.name}</td>
+      <td>${size}</td>
+      <td>${asset.status}</td>
+      <td class="num ${irrColor}">${r.irr ? r.irr.toFixed(1)+'%' : 'N/A'}</td>
+      <td class="num">${r.min_dscr ? r.min_dscr.toFixed(2)+'x' : '—'}</td>
+      <td class="num">${r.npv ? '$'+Math.round(r.npv/1000).toLocaleString()+'K' : '—'}</td>
+      <td class="num">${r.payback ? r.payback+' yrs' : '—'}</td>
+    </tr>`;
+  }).join('');
+
+  // Inject portfolio summary into overview screen
+  const card = document.querySelector('#s-overview .card');
+  if (card) {
+    card.innerHTML = `
+      <div class="card-hd">Portfolio Summary — All Assets</div>
+      <div style="overflow-x:auto">
+        <table class="tbl" style="min-width:700px">
+          <thead><tr>
+            <th>Asset</th><th>Size</th><th>Status</th>
+            <th style="text-align:right">Levered IRR</th>
+            <th style="text-align:right">Min DSCR</th>
+            <th style="text-align:right">NPV @ 8%</th>
+            <th style="text-align:right">Payback</th>
+          </tr></thead>
+          <tbody>${summaryRows}</tbody>
+        </table>
+      </div>`;
+  }
+
+  // Run full portfolio model
+  const result = runModelLocal(deal.a);
+  renderModel(result);
 }
 
 function setVal(id, val) {
