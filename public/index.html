@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SolarLedger MVP</title>
+<title>SolarLedger — Talera</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -26,36 +26,24 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 .app{display:flex;height:100vh;overflow:hidden}
 
 /* SIDEBAR */
-.sidebar{width:240px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;border-right:1px solid var(--line)}
-.brand{padding:18px 20px 14px;border-bottom:1px solid var(--line)}
-.brand-logo{font-size:20px;font-weight:600;color:#fff;letter-spacing:-.02em}
+.sidebar{width:240px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;border-right:1px solid var(--line);overflow-y:auto}
+.brand{padding:16px 20px 12px;border-bottom:1px solid var(--line)}
+.brand-logo{font-size:18px;font-weight:600;color:#fff;letter-spacing:-.02em}
 .brand-logo span{color:#4A9EF0}
-.brand-sub{font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
-.deal-selector{padding:10px 12px;border-bottom:1px solid var(--line)}
-.deal-selector label{font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px}
-.deal-select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);color:#fff;font-family:var(--sans);font-size:12px;padding:7px 10px;cursor:pointer;outline:none}
-.deal-select option{background:var(--navy2);color:#fff}
-.asset-tabs{padding:8px 10px;border-bottom:1px solid var(--line)}
-.asset-tabs-label{font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
-.asset-tab-list{display:flex;flex-direction:column;gap:1px}
-.asset-tab{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:var(--r);cursor:pointer;font-size:11.5px;color:rgba(255,255,255,.35);transition:all .15s;border:none;background:none;width:100%;text-align:left}
-.asset-tab:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.6)}
-.asset-tab.active{background:rgba(74,158,240,.12);color:#4A9EF0;font-weight:500}
-.asset-tab .tab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.15)}
-.asset-tab.active .tab-dot{background:#4A9EF0}
-.asset-tab.portfolio{color:rgba(255,255,255,.5);font-weight:500}
-.asset-tab.portfolio.active{background:rgba(255,255,255,.08);color:#fff}
-.asset-badge{font-size:9px;padding:1px 6px;border-radius:10px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.3);margin-left:auto}
-.asset-tab.active .asset-badge{background:rgba(74,158,240,.2);color:#4A9EF0}
-.nav{padding:8px 10px;flex:1;overflow-y:auto}
+.brand-client{font-size:10px;color:rgba(255,255,255,.3);margin-top:1px}
+.brand-operator{font-size:9px;color:rgba(255,255,255,.15);margin-top:1px}
+.sidebar-select-group{padding:10px 12px;border-bottom:1px solid var(--line)}
+.sidebar-select-label{font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px}
+.sidebar-select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);color:#fff;font-family:var(--sans);font-size:12px;padding:7px 10px;cursor:pointer;outline:none}
+.sidebar-select option{background:var(--navy2);color:#fff}
+.nav{padding:8px 10px;flex:1}
 .nav-section{font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.08em;padding:10px 10px 4px}
 .nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r);cursor:pointer;font-size:12.5px;color:rgba(255,255,255,.4);transition:all .15s;border:none;background:none;width:100%;text-align:left;margin-bottom:1px}
 .nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.7)}
 .nav-item.active{background:rgba(74,158,240,.14);color:#4A9EF0;font-weight:500}
 .nav-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;background:rgba(255,255,255,.07);color:rgba(255,255,255,.25);font-family:var(--mono)}
 .nav-item.active .nav-num{background:rgba(74,158,240,.25);color:#4A9EF0}
-.nav-item.done .nav-num{background:rgba(46,125,50,.25);color:#66BB6A}
-.sidebar-foot{padding:10px 14px;border-top:1px solid var(--line);font-size:10px;color:rgba(255,255,255,.12)}
+.sidebar-foot{padding:10px 14px;border-top:1px solid var(--line);font-size:10px;color:rgba(255,255,255,.12);margin-top:auto}
 
 /* MAIN */
 .main{flex:1;overflow-y:auto;background:var(--surface);display:flex;flex-direction:column}
@@ -68,7 +56,6 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 .btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
 .btn-primary:hover{background:#1253A4}
 .btn-sm{font-size:11px;padding:4px 10px}
-.btn-green{background:var(--green);color:#fff;border-color:var(--green)}
 .content{padding:24px;flex:1}
 .screen{display:none}
 .screen.active{display:block;animation:fadeUp .2s ease}
@@ -83,6 +70,34 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 .sec-hd{margin-bottom:16px}
 .sec-hd h2{font-size:16px;font-weight:600;color:var(--text);letter-spacing:-.02em}
 .sec-hd p{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* DEAL CARDS - homepage */
+.deal-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.deal-card-big{background:var(--white);border:1px solid var(--line-light);border-radius:var(--r-lg);padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06);cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.deal-card-big:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-1px);border-color:#CBD5E1}
+.deal-card-big::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.deal-card-big.solar::before{background:linear-gradient(90deg,#1565C7,#42A5F5)}
+.deal-card-big.bess::before{background:linear-gradient(90deg,#00897B,#4DB6AC)}
+.deal-card-big.operating::before{background:linear-gradient(90deg,#2E7D32,#66BB6A)}
+.deal-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.deal-card-name{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.01em}
+.deal-card-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.deal-card-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.dcm{background:var(--surface);border-radius:var(--r);padding:10px 12px}
+.dcm-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.dcm-value{font-size:16px;font-weight:600;font-family:var(--mono);letter-spacing:-.02em}
+.dcm-value.blue{color:var(--blue)}
+.dcm-value.green{color:var(--green)}
+.dcm-value.amber{color:var(--amber)}
+.dcm-value.red{color:var(--red)}
+.deal-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--line-light)}
+.deal-card-flags{display:flex;gap:6px}
+.flag-pill{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
+.flag-pill.critical{background:var(--red-bg);color:var(--red)}
+.flag-pill.major{background:var(--amber-bg);color:var(--amber)}
+.flag-pill.minor{background:var(--blue-light);color:var(--blue)}
+.flag-pill.clear{background:var(--green-bg);color:var(--green)}
+.deal-card-open{font-size:11px;color:var(--blue);font-weight:500}
 
 /* METRICS */
 .metric{background:var(--white);border:1px solid var(--line-light);border-radius:var(--r);padding:14px 16px}
@@ -110,16 +125,16 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 .badge-amber{background:var(--amber-bg);color:var(--amber)}
 .badge-red{background:var(--red-bg);color:var(--red)}
 .badge-blue{background:var(--blue-light);color:var(--blue)}
+.badge-teal{background:var(--teal-bg);color:var(--teal)}
 
 /* FORM */
 .form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
-.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .fg label{display:block;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:4px}
 .fg input,.fg select{width:100%;font-family:var(--sans);font-size:12px;padding:7px 10px;border-radius:var(--r);border:1px solid var(--line-light);background:var(--white);color:var(--text);outline:none;transition:border-color .15s}
 .fg input:focus,.fg select:focus{border-color:var(--blue)}
 .fg input.inp-blue{color:var(--blue);font-family:var(--mono);font-weight:500}
-.fg input.inp-flag{border-color:#F59E0B;background:#FFFBEB}
-.fg .unit{font-size:10px;color:var(--text3);margin-top:2px}
+.asmp-input{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--blue);background:none;border:1px solid transparent;outline:none;width:90px;text-align:right;cursor:pointer;padding:3px 6px;border-radius:4px;transition:all .15s}
+.asmp-input:focus{background:var(--blue-pale);border-color:var(--blue)}
 
 /* FLAGS */
 .flag-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-light)}
@@ -130,7 +145,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 .flag-action{font-size:10px;color:var(--teal);margin-top:4px;font-weight:500}
 
 /* CHAT */
-.chat-wrap{display:flex;flex-direction:column;height:400px;background:var(--white);border:1px solid var(--line-light);border-radius:var(--r-lg)}
+.chat-wrap{display:flex;flex-direction:column;height:420px;background:var(--white);border:1px solid var(--line-light);border-radius:var(--r-lg)}
 .chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
 .msg{display:flex;gap:8px;align-items:flex-start}
 .msg-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
@@ -146,11 +161,30 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 .sugg{font-size:10px;padding:3px 9px;border-radius:20px;border:1px solid var(--line-light);background:var(--surface);color:var(--text3);cursor:pointer;transition:all .15s}
 .sugg:hover{background:var(--blue-pale);border-color:#93C5FD;color:var(--blue)}
 
+/* MEMO */
+.memo-score{display:flex;align-items:center;gap:16px;padding:14px 16px;background:var(--blue-pale);border:1px solid #C7DFF7;border-radius:var(--r);margin-bottom:16px}
+.score-ring{width:60px;height:60px;border-radius:50%;border:3px solid var(--blue);display
+    :flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.score-n{font-size:20px;font-weight:700;color:var(--blue);font-family:var(--mono);line-height:1}
+.score-d{font-size:9px;color:var(--text3)}
+.score-txt h3{font-size:14px;font-weight:600;color:var(--text)}
+.score-txt p{font-size:11px;color:var(--text3);margin-top:2px;line-height:1.5}
+.memo-block{padding:12px 0;border-bottom:1px solid var(--line-light)}
+.memo-block:last-child{border-bottom:none}
+.memo-lbl{font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.memo-editable{font-size:12px;color:var(--text);line-height:1.7;width:100%;border:1px solid transparent;border-radius:var(--r);padding:8px;outline:none;resize:vertical;font-family:var(--sans);background:transparent;transition:border-color .15s;min-height:60px}
+.memo-editable:focus{border-color:var(--blue);background:var(--blue-pale)}
+.fin-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--line-light);font-size:12px}
+.fin-row:last-child{border-bottom:none}
+.fin-lbl{color:var(--text3)}
+.fin-val{font-family:var(--mono);font-weight:600;color:var(--text)}
+.fin-val.pos{color:var(--green)}
+.fin-val.warn{color:var(--amber)}
+
 /* CHART */
 .chart-wrap{height:160px;display:flex;align-items:flex-end;gap:2px;padding:10px 0 20px;position:relative}
 .bar{flex:1;border-radius:2px 2px 0 0;min-width:4px;cursor:default;transition:opacity .2s}
 .bar:hover{opacity:.7}
-.bar-lbl{position:absolute;bottom:2px;font-size:8px;color:var(--text3);font-family:var(--mono)}
 
 /* AUDIT */
 .audit-item{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line-light);font-size:11px}
@@ -160,10 +194,8 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 .audit-to{color:var(--green);font-family:var(--mono);font-weight:600}
 
 /* LOADING */
-.loading{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3);padding:8px 0}
-.spinner{width:14px;height:14px;border:2px solid var(--line-light);border-top-color:var(--blue);border-radius:50%;animation:spin .6s linear infinite}
+.spinner{width:14px;height:14px;border:2px solid var(--line-light);border-top-color:var(--blue);border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line-light)}
 .main::-webkit-scrollbar{width:4px}
 .main::-webkit-scrollbar-thumb{background:var(--line-light);border-radius:2px}
@@ -176,38 +208,53 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 <aside class="sidebar">
   <div class="brand">
     <div class="brand-logo">Solar<span>Ledger</span></div>
-    <div class="brand-sub">MVP · Financial Modeling</div>
+    <div class="brand-client">Arcadian Infrastructure Partners</div>
+    <div class="brand-operator">Operated by Talera</div>
   </div>
-  <div class="deal-selector">
-    <label>Active Deal</label>
-    <select class="deal-select" id="deal-select" onchange="loadDeal(this.value)">
+
+  <div class="sidebar-select-group">
+    <label class="sidebar-select-label">Active Deal</label>
+    <select class="sidebar-select" id="deal-select" onchange="loadDeal(this.value)">
+      <option value="home">— All Deals —</option>
       <option value="yarotek">Yarotek Portfolio</option>
       <option value="foley">Foley Solar (LUIS)</option>
       <option value="bess">Project Genesis (DG BESS)</option>
       <option value="bsu">BSU Operating Portfolio</option>
     </select>
   </div>
-  <div class="asset-tabs" id="asset-tabs">
-    <div class="asset-tabs-label">Assets</div>
-    <div class="asset-tab-list" id="asset-tab-list"></div>
+
+  <div class="sidebar-select-group" id="asset-select-group" style="display:none">
+    <label class="sidebar-select-label">Active Asset</label>
+    <select class="sidebar-select" id="asset-select" onchange="selectAsset(this.value)">
+    </select>
   </div>
+
   <nav class="nav">
-    <div class="nav-section">Workflow</div>
-    <button class="nav-item active" onclick="go('overview',this)">
-      <span class="nav-num">1</span>Deal Overview
+    <div class="nav-section">Views</div>
+    <button class="nav-item active" id="nav-home" onclick="go('home',this)">
+      <span class="nav-num">⌂</span>Deal Summary
     </button>
-    <button class="nav-item" onclick="go('assumptions',this)">
-      <span class="nav-num">2</span>Assumptions
-    </button>
-    <button class="nav-item" onclick="go('model',this)">
-      <span class="nav-num">3</span>Financial Model
-    </button>
-    <button class="nav-item" onclick="go('engineering',this)">
-      <span class="nav-num">4</span>Engineering Flags
-    </button>
-    <button class="nav-item" onclick="go('chat',this)">
-      <span class="nav-num">5</span>Analyst Chat
-    </button>
+    <div id="deal-nav" style="display:none">
+      <div class="nav-section">Deal Workflow</div>
+      <button class="nav-item" onclick="go('overview',this)">
+        <span class="nav-num">1</span>Asset Overview
+      </button>
+      <button class="nav-item" onclick="go('assumptions',this)">
+        <span class="nav-num">2</span>Assumptions
+      </button>
+      <button class="nav-item" onclick="go('model',this)">
+        <span class="nav-num">3</span>Financial Model
+      </button>
+      <button class="nav-item" onclick="go('engineering',this)">
+        <span class="nav-num">4</span>Engineering Flags
+      </button>
+      <button class="nav-item" onclick="go('chat',this)">
+        <span class="nav-num">5</span>Analyst Chat
+      </button>
+      <button class="nav-item" onclick="go('memo',this)">
+        <span class="nav-num">6</span>Investment Memo
+      </button>
+    </div>
   </nav>
   <div class="sidebar-foot">Talera · SolarLedger MVP · 2026</div>
 </aside>
@@ -216,57 +263,77 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
 <main class="main">
   <div class="topbar">
     <div class="topbar-left">
-      <h1 id="top-title">Deal Overview</h1>
-      <p id="top-sub">Loading deal data...</p>
+      <h1 id="top-title">Deal Summary</h1>
+      <p id="top-sub">Arcadian Infrastructure Partners — Active Pipeline</p>
     </div>
     <div class="topbar-right">
-      <button class="btn btn-sm" onclick="exportExcel()">⬇ Export Excel</button>
-      <button class="btn btn-primary btn-sm" onclick="runModel()">↻ Recalculate</button>
+      <button class="btn btn-sm" id="btn-export" style="display:none" onclick="exportExcel()">⬇ Export Excel</button>
+      <button class="btn btn-primary btn-sm" id="btn-recalc" style="display:none" onclick="runModel()">↻ Recalculate</button>
     </div>
   </div>
   <div class="content">
+    <!-- SCREEN: HOME DASHBOARD -->
+  <div class="screen active" id="s-home">
+    <div class="sec-hd">
+      <h2>Arcadian Infrastructure Partners</h2>
+      <p>Active deal pipeline — <span id="home-date"></span></p>
+    </div>
+    <div class="deal-cards-grid" id="deal-cards"></div>
+    <div class="card">
+      <div class="card-hd">Portfolio Summary</div>
+      <table class="tbl">
+        <thead><tr>
+          <th>Deal</th><th>Type</th><th>Status</th>
+          <th style="text-align:right">CapEx</th>
+          <th style="text-align:right">Levered IRR</th>
+          <th style="text-align:right">NPV @ 8%</th>
+          <th style="text-align:right">Min DSCR</th>
+          <th style="text-align:right">Flags</th>
+        </tr></thead>
+        <tbody id="portfolio-tbl-body"></tbody>
+      </table>
+    </div>
+  </div>
 
-  <!-- SCREEN 1: OVERVIEW -->
-  <div class="screen active" id="s-overview">
+  <!-- SCREEN: ASSET OVERVIEW -->
+  <div class="screen" id="s-overview">
     <div class="sec-hd">
       <h2 id="deal-name">—</h2>
       <p id="deal-meta">—</p>
     </div>
-    <div class="four-col" id="overview-metrics">
+    <div class="four-col">
       <div class="metric"><div class="metric-label">Levered IRR</div><div class="metric-value mv-blue" id="ov-irr">—</div><div class="metric-sub" id="ov-irr-sub">vs hurdle rate</div></div>
       <div class="metric"><div class="metric-label">NPV @ 8%</div><div class="metric-value mv-green" id="ov-npv">—</div><div class="metric-sub">$'000</div></div>
-      <div class="metric"><div class="metric-label">Min DSCR</div><div class="metric-value mv-amber" id="ov-dscr">—</div><div class="metric-sub" id="ov-dscr-sub">covenant</div></div>
+      <div class="metric"><div class="metric-label">Min DSCR</div><div class="metric-value mv-amber" id="ov-dscr">—</div><div class="metric-sub">covenant</div></div>
       <div class="metric"><div class="metric-label">Payback</div><div class="metric-value" id="ov-payback">—</div><div class="metric-sub">years from COD</div></div>
     </div>
     <div class="two-col">
       <div class="card">
         <div class="card-hd">Capital Stack ($'000)</div>
-        <table class="tbl" id="capstack-tbl">
+        <table class="tbl">
           <thead><tr><th>Tranche</th><th style="text-align:right">$'000</th><th style="text-align:right">%</th></tr></thead>
           <tbody id="capstack-body"></tbody>
         </table>
       </div>
       <div class="card">
-        <div class="card-hd">Key Deal Parameters</div>
-        <table class="tbl" id="params-tbl">
-          <tbody id="params-body"></tbody>
-        </table>
+        <div class="card-hd">Key Parameters</div>
+        <table class="tbl"><tbody id="params-body"></tbody></table>
       </div>
     </div>
     <div class="card">
-      <div class="card-hd">Annual Cash Flow — 35 Years ($'000)</div>
+      <div class="card-hd">Annual Cash Flow — Full Asset Life ($'000)</div>
       <div class="chart-wrap" id="cf-chart"></div>
     </div>
     <div class="actions">
-      <button class="btn btn-primary" onclick="go('assumptions',document.querySelectorAll('.nav-item')[1])">Review Assumptions →</button>
+      <button class="btn btn-primary" onclick="go('assumptions',document.querySelectorAll('#deal-nav .nav-item')[1])">Review Assumptions →</button>
     </div>
   </div>
 
-  <!-- SCREEN 2: ASSUMPTIONS -->
+  <!-- SCREEN: ASSUMPTIONS -->
   <div class="screen" id="s-assumptions">
     <div class="sec-hd">
       <h2>Assumptions</h2>
-      <p>Edit any value. Click Recalculate to update the model. Changes are logged automatically.</p>
+      <p>Edit any value and click Recalculate. All changes are logged.</p>
     </div>
     <div class="two-col">
       <div class="card">
@@ -274,12 +341,12 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
         <table class="tbl">
           <thead><tr><th>Parameter</th><th>Unit</th><th style="text-align:right">Value</th></tr></thead>
           <tbody>
-            <tr><td>MW dc</td><td>MWdc</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-mwdc" onchange="flagChange('a-mwdc')"></td></tr>
-            <tr><td>Annual Yield (P50)</td><td>kWh/kWp</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-yield" onchange="flagChange('a-yield')"></td></tr>
-            <tr><td>Availability</td><td>%</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-avail" onchange="flagChange('a-avail')"></td></tr>
-            <tr><td>Degradation</td><td>%/yr</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-degrad" onchange="flagChange('a-degrad')"></td></tr>
-            <tr><td>Curtailment</td><td>%</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-curtail" onchange="flagChange('a-curtail')"></td></tr>
-            <tr><td>Asset Life</td><td>years</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-life" onchange="flagChange('a-life')"></td></tr>
+            <tr><td>MW dc</td><td>MWdc</td><td><input class="asmp-input" id="a-mwdc" onchange="flagChange(this)"></td></tr>
+            <tr><td>Annual Yield (P50)</td><td>kWh/kWp</td><td><input class="asmp-input" id="a-yield" onchange="flagChange(this)"></td></tr>
+            <tr><td>Availability</td><td>%</td><td><input class="asmp-input" id="a-avail" onchange="flagChange(this)"></td></tr>
+            <tr><td>Degradation</td><td>%/yr</td><td><input class="asmp-input" id="a-degrad" onchange="flagChange(this)"></td></tr>
+            <tr><td>Curtailment</td><td>%</td><td><input class="asmp-input" id="a-curtail" onchange="flagChange(this)"></td></tr>
+            <tr><td>Asset Life</td><td>years</td><td><input class="asmp-input" id="a-life" onchange="flagChange(this)"></td></tr>
           </tbody>
         </table>
       </div>
@@ -288,25 +355,25 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
         <table class="tbl">
           <thead><tr><th>Parameter</th><th>Unit</th><th style="text-align:right">Value</th></tr></thead>
           <tbody>
-            <tr><td>PPA Price (Yr 1)</td><td>$/MWh</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-ppa" onchange="flagChange('a-ppa')"></td></tr>
-            <tr><td>PPA Escalation</td><td>%/yr</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-ppaesc" onchange="flagChange('a-ppaesc')"></td></tr>
-            <tr><td>PPA Tenor</td><td>years</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-ppaten" onchange="flagChange('a-ppaten')"></td></tr>
-            <tr><td>Merchant Price</td><td>$/MWh</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-merch" onchange="flagChange('a-merch')"></td></tr>
-            <tr><td>Merchant Escalation</td><td>%/yr</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-merchesc" onchange="flagChange('a-merchesc')"></td></tr>
+            <tr><td>PPA Price (Yr 1)</td><td>$/MWh</td><td><input class="asmp-input" id="a-ppa" onchange="flagChange(this)"></td></tr>
+            <tr><td>PPA Escalation</td><td>%/yr</td><td><input class="asmp-input" id="a-ppaesc" onchange="flagChange(this)"></td></tr>
+            <tr><td>PPA Tenor</td><td>years</td><td><input class="asmp-input" id="a-ppaten" onchange="flagChange(this)"></td></tr>
+            <tr><td>Merchant Price</td><td>$/MWh</td><td><input class="asmp-input" id="a-merch" onchange="flagChange(this)"></td></tr>
+            <tr><td>Merchant Escalation</td><td>%/yr</td><td><input class="asmp-input" id="a-merchesc" onchange="flagChange(this)"></td></tr>
           </tbody>
         </table>
       </div>
     </div>
     <div class="two-col">
       <div class="card">
-        <div class="card-hd">C. CAPEX & OPEX ($'000)</div>
+        <div class="card-hd">C. CAPEX & OPEX</div>
         <table class="tbl">
           <thead><tr><th>Parameter</th><th>Unit</th><th style="text-align:right">Value</th></tr></thead>
           <tbody>
-            <tr><td>Total CapEx</td><td>$'000</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-capex" onchange="flagChange('a-capex')"></td></tr>
-            <tr><td>OPEX Base (Yr 1)</td><td>$'000</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-opex" onchange="flagChange('a-opex')"></td></tr>
-            <tr><td>OPEX Escalation</td><td>%/yr</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-opexesc" onchange="flagChange('a-opexesc')"></td></tr>
-            <tr><td>Contingency</td><td>%</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-cont" onchange="flagChange('a-cont')"></td></tr>
+            <tr><td>Total CapEx</td><td>$'000</td><td><input class="asmp-input" id="a-capex" onchange="flagChange(this)"></td></tr>
+            <tr><td>OPEX Base (Yr 1)</td><td>$'000</td><td><input class="asmp-input" id="a-opex" onchange="flagChange(this)"></td></tr>
+            <tr><td>OPEX Escalation</td><td>%/yr</td><td><input class="asmp-input" id="a-opexesc" onchange="flagChange(this)"></td></tr>
+            <tr><td>Contingency</td><td>%</td><td><input class="asmp-input" id="a-cont" onchange="flagChange(this)"></td></tr>
           </tbody>
         </table>
       </div>
@@ -315,30 +382,30 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
         <table class="tbl">
           <thead><tr><th>Parameter</th><th>Unit</th><th style="text-align:right">Value</th></tr></thead>
           <tbody>
-            <tr><td>Term Loan</td><td>$'000</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-loan" onchange="flagChange('a-loan')"></td></tr>
-            <tr><td>Interest Rate</td><td>%</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-rate" onchange="flagChange('a-rate')"></td></tr>
-            <tr><td>Loan Tenor</td><td>years</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-tenor" onchange="flagChange('a-tenor')"></td></tr>
-            <tr><td>ITC Rate</td><td>%</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-itc" onchange="flagChange('a-itc')"></td></tr>
-            <tr><td>FMV ($'000)</td><td>$'000</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-fmv" onchange="flagChange('a-fmv')"></td></tr>
+            <tr><td>Term Loan</td><td>$'000</td><td><input class="asmp-input" id="a-loan" onchange="flagChange(this)"></td></tr>
+            <tr><td>Interest Rate</td><td>%</td><td><input class="asmp-input" id="a-rate" onchange="flagChange(this)"></td></tr>
+            <tr><td>Loan Tenor</td><td>years</td><td><input class="asmp-input" id="a-tenor" onchange="flagChange(this)"></td></tr>
+            <tr><td>ITC Rate</td><td>%</td><td><input class="asmp-input" id="a-itc" onchange="flagChange(this)"></td></tr>
+            <tr><td>FMV ($'000)</td><td>$'000</td><td><input class="asmp-input" id="a-fmv" onchange="flagChange(this)"></td></tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div class="card" id="audit-card">
+    <div class="card">
       <div class="card-hd">Change Log</div>
-      <div id="audit-log"></div>
+      <div id="audit-log"><div style="font-size:11px;color:var(--text3);padding:4px 0">No changes yet.</div></div>
     </div>
     <div class="actions">
-      <button class="btn" onclick="go('overview',document.querySelectorAll('.nav-item')[0])">← Back</button>
-      <button class="btn btn-primary" onclick="runModel()">Recalculate Model →</button>
+      <button class="btn" onclick="go('overview',document.querySelectorAll('#deal-nav .nav-item')[0])">← Back</button>
+      <button class="btn btn-primary" onclick="runModel()">Recalculate →</button>
     </div>
   </div>
 
-  <!-- SCREEN 3: MODEL -->
+  <!-- SCREEN: FINANCIAL MODEL -->
   <div class="screen" id="s-model">
     <div class="sec-hd">
       <h2>Financial Model — Annual Projections</h2>
-      <p>All figures in $'000. Based on current assumptions.</p>
+      <p id="model-sub">All figures in $'000.</p>
     </div>
     <div class="four-col">
       <div class="metric"><div class="metric-label">Levered IRR</div><div class="metric-value mv-blue" id="m-irr">—</div></div>
@@ -349,7 +416,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
     <div class="card">
       <div class="card-hd">Revenue & EBITDA — Selected Years</div>
       <div style="overflow-x:auto">
-        <table class="tbl" id="rev-tbl" style="min-width:800px">
+        <table class="tbl" style="min-width:800px">
           <thead><tr id="rev-head"></tr></thead>
           <tbody id="rev-body"></tbody>
         </table>
@@ -358,19 +425,19 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
     <div class="card">
       <div class="card-hd">Debt Schedule & DSCR — Selected Years</div>
       <div style="overflow-x:auto">
-        <table class="tbl" id="debt-tbl" style="min-width:700px">
+        <table class="tbl" style="min-width:700px">
           <thead><tr id="debt-head"></tr></thead>
           <tbody id="debt-body"></tbody>
         </table>
       </div>
     </div>
     <div class="actions">
-      <button class="btn" onclick="go('assumptions',document.querySelectorAll('.nav-item')[1])">← Assumptions</button>
-      <button class="btn btn-primary" onclick="go('engineering',document.querySelectorAll('.nav-item')[3])">Engineering Flags →</button>
+      <button class="btn" onclick="go('assumptions',document.querySelectorAll('#deal-nav .nav-item')[1])">← Assumptions</button>
+      <button class="btn btn-primary" onclick="go('engineering',document.querySelectorAll('#deal-nav .nav-item')[3])">Engineering Flags →</button>
     </div>
   </div>
 
-  <!-- SCREEN 4: ENGINEERING -->
+  <!-- SCREEN: ENGINEERING -->
   <div class="screen" id="s-engineering">
     <div class="sec-hd">
       <h2>Engineering & Risk Flags</h2>
@@ -386,12 +453,12 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
       <div id="flags-list"></div>
     </div>
     <div class="actions">
-      <button class="btn" onclick="go('model',document.querySelectorAll('.nav-item')[2])">← Model</button>
-      <button class="btn btn-primary" onclick="go('chat',document.querySelectorAll('.nav-item')[4])">Analyst Chat →</button>
+      <button class="btn" onclick="go('model',document.querySelectorAll('#deal-nav .nav-item')[2])">← Model</button>
+      <button class="btn btn-primary" onclick="go('chat',document.querySelectorAll('#deal-nav .nav-item')[4])">Analyst Chat →</button>
     </div>
   </div>
 
-  <!-- SCREEN 5: CHAT -->
+  <!-- SCREEN: CHAT -->
   <div class="screen" id="s-chat">
     <div class="sec-hd">
       <h2>Analyst Chat</h2>
@@ -408,270 +475,561 @@ html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(-
           </div>
         </div>
       </div>
-      <div>
-        <div class="card" style="margin-bottom:0">
-          <div class="card-hd">Live Model State</div>
-          <table class="tbl" id="live-state"></table>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hd">Live Model State</div>
+        <table class="tbl" id="live-state"></table>
+        <div style="margin-top:12px">
+          <div class="card-hd">Audit Trail</div>
+          <div id="audit-trail"><div style="font-size:11px;color:var(--text3)">No changes yet.</div></div>
         </div>
       </div>
     </div>
     <div class="actions">
-      <button class="btn" onclick="go('engineering',document.querySelectorAll('.nav-item')[3])">← Engineering</button>
+      <button class="btn" onclick="go('engineering',document.querySelectorAll('#deal-nav .nav-item')[3])">← Engineering</button>
+      <button class="btn btn-primary" onclick="go('memo',document.querySelectorAll('#deal-nav .nav-item')[5])">Investment Memo →</button>
     </div>
   </div>
 
+  <!-- SCREEN: INVESTMENT MEMO -->
+  <div class="screen" id="s-memo">
+    <div class="sec-hd">
+      <h2>Investment Memo</h2>
+      <p id="memo-deal-name">Auto-generated from final model state. Click any section to edit.</p>
+    </div>
+    <div class="memo-score" id="memo-score-block">
+      <div class="score-ring"><div class="score-n" id="memo-score">—</div><div class="score-d">/100</div></div>
+      <div class="score-txt">
+        <h3 id="memo-verdict">—</h3>
+        <p id="memo-verdict-desc">—</p>
+      </div>
+    </div>
+    <div class="two-col" style="margin-bottom:16px">
+      <div class="card">
+        <div class="card-hd">Financial Summary</div>
+        <div id="memo-fin-summary"></div>
+      </div>
+      <div class="card">
+        <div class="card-hd">Risk Summary</div>
+        <div id="memo-risk-summary"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd">Investment Thesis — Click any section to edit</div>
+      <div class="memo-block">
+        <div class="memo-lbl">Executive Summary</div>
+        <textarea class="memo-editable" id="memo-exec" rows="4"></textarea>
+      </div>
+      <div class="memo-block">
+        <div class="memo-lbl">Technical Assessment</div>
+        <textarea class="memo-editable" id="memo-tech" rows="4"></textarea>
+      </div>
+      <div class="memo-block">
+        <div class="memo-lbl">Financial Assessment</div>
+        <textarea class="memo-editable" id="memo-fin" rows="4"></textarea>
+      </div>
+      <div class="memo-block" style="border:none">
+        <div class="memo-lbl">Recommendation</div>
+        <textarea class="memo-editable" id="memo-rec" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="go('chat',document.querySelectorAll('#deal-nav .nav-item')[4])">← Chat</button>
+      <button class="btn" onclick="exportPDF()">Export PDF</button>
+      <button class="btn btn-primary" onclick="regenerateMemo()">↻ Regenerate Memo</button>
+    </div>
   </div>
-</main>
-</div>
 
+  </div><!-- /content -->
+</main>
+</div><!-- /app -->
 <script>
+    // ── DEAL DATA ────────────────────────────────────────────────────────────────
+    const DEALS = {
+      yarotek: {
+        name: 'Yarotek Portfolio', type: 'solar', status: 'Late-Stage Development',
+        meta: 'Utility-Scale Solar · 253 MWdc · Duke Energy Carolinas · NC · COD Q4 2029',
+        color: 'solar',
+        assets: [
+          {id:'all', name:'All Assets (Portfolio)', type:'summary'},
+          {id:'cheyenne', name:'Cheyenne River Ranch', mwdc:253, yield_kwh:1990},
+          {id:'nye', name:'NYE', mwdc:60, yield_kwh:2023},
+          {id:'lewis', name:'Lewis', mwdc:20, yield_kwh:1950},
+          {id:'gardner', name:'Gardner', mwdc:18, yield_kwh:1960},
+          {id:'canton', name:'Canton', mwdc:22, yield_kwh:1940},
+          {id:'hatcher', name:'Hatcher', mwdc:19, yield_kwh:1970},
+          {id:'red_oak', name:'Red Oak', mwdc:21, yield_kwh:1955},
+          {id:'upton', name:'Upton Farms', mwdc:17, yield_kwh:1980},
+          {id:'bentley', name:'Bentley Farms', mwdc:23, yield_kwh:1945},
+          {id:'kitchen', name:'Kitchen Farms', mwdc:16, yield_kwh:1990},
+          {id:'samra', name:'Samra', mwdc:18, yield_kwh:1965},
+          {id:'joann', name:'Jo Ann Scarlett Smith', mwdc:15, yield_kwh:1975},
+          {id:'shalimar', name:'Shalimar Farms', mwdc:20, yield_kwh:1960},
+          {id:'ravi', name:'Ravi Reddi / Regency Farms', mwdc:17, yield_kwh:1970},
+        ],
+        capital_stack: {
+          'TEBL / TRABL':[123980],'Back Leverage':[144700],
+          'Preferred Equity':[99754],'Cash Equity':[22388]
+        },
+        params: {
+          'Asset Type':'Utility-Scale Solar','Grid Operator':'Duke Energy Carolinas',
+          'Location':'Hoke & Robeson Co., NC','COD Target':'Q4 2029',
+          'ITC Rate':'40%','Safe Harbor':'Confirmed','PPA Tenor':'25 years','Hurdle Rate':'10.0%'
+        },
+        a: {
+          mwdc:253,yield_kwh:1990,avail:0.985,degrad:0.004,curtail:0.02,life:35,
+          ppa_price:59,ppa_esc:0.0,ppa_tenor:25,merch_price:65,merch_esc:0.015,
+          capex:367873,opex_base:8200,opex_esc:0.023,loan:175000,rate:0.0775,tenor:20,
+          itc:0.40,fmv:475020,discount:0.08,soiling_loss:0.015,contingency_pct:0.035,
+          dscr_covenant:1.25,hurdle_rate:10.0,safe_harbor:true
+        },
+        suggestions:['Change merchant price to $70/MWh','What if degradation is 0.5%/yr?','Increase OPEX by 15%','Bear case: merchant -20%']
+      },
+      foley: {
+        name: 'Foley Solar (LUIS)', type: 'solar', status: 'Near-Term Operating',
+        meta: 'Utility-Scale Solar · 106 MWdc · SERC · Baldwin County, AL · COD Q1 2026',
+        color: 'solar',
+        assets: [
+          {id:'all', name:'All Assets (Portfolio)', type:'summary'},
+          {id:'foley_main', name:'Foley Solar', mwdc:106, yield_kwh:1720}
+        ],
+        capital_stack: {'Tax Equity':[65000],'Permanent Debt':[65000],'Sponsor Equity':[30734]},
+        params: {
+          'Asset Type':'Utility-Scale Solar','Grid Operator':'SERC',
+          'Location':'Baldwin County, Alabama','COD Target':'Q1 2026',
+          'ITC Rate':'40%','TE Structure':'Partnership Flip','PPA Tenor':'17 years','Hurdle Rate':'10.0%'
+        },
+        a: {
+          mwdc:106,yield_kwh:1720,avail:0.98,degrad:0.004,curtail:0.02,life:40,
+          ppa_price:52,ppa_esc:0.01,ppa_tenor:17,merch_price:58,merch_esc:0.015,
+          capex:160734,opex_base:2800,opex_esc:0.02,loan:65000,rate:0.078,tenor:18,
+          itc:0.40,fmv:205000,discount:0.08,soiling_loss:0.02,contingency_pct:0.05,
+          dscr_covenant:1.25,hurdle_rate:10.0,safe_harbor:true
+        },
+        suggestions:['What if PPA drops to $48/MWh?','Model interest rate at 9%','P90 yield scenario','CapEx +10% impact']
+      },
+      bess: {
+        name: 'Project Genesis (DG BESS)', type: 'bess', status: 'Mid-Stage Development',
+        meta: 'Battery Storage · 5 MW / 20 MWh · NY ISO · 4 Sites · COD Nov 2028',
+        color: 'bess',
+        assets: [
+          {id:'all', name:'All Assets (Portfolio)', type:'summary'},
+          {id:'bronx', name:'Bronx', mw:1.25, mwh:5},
+          {id:'peekskill', name:'Peekskill', mw:1.25, mwh:5},
+          {id:'kitchen_bess', name:'Kitchen Farms', mw:1.25, mwh:5},
+          {id:'bracero', name:'Bracero Pecan', mw:1.25, mwh:5}
+        ],
+        capital_stack: {
+          'TEBL / TRABL':[3524],'Back Leverage':[4470],
+          'Preferred Equity':[1885],'Cash Equity':[1743]
+        },
+        params: {
+          'Asset Type':'Battery Storage (BESS)','Grid Operator':'NY ISO',
+          'Location':'New York — 4 Sites','Duration':'4 hours (20 MWh)',
+          'COD Target':'Nov 2028','ITC Rate':'40%','IA Status':'⚠ Pending','Hurdle Rate':'10.0%'
+        },
+        a: {
+          mwdc:5,yield_kwh:1460,avail:0.97,degrad:0.025,curtail:0.0,life:30,
+          ppa_price:85,ppa_esc:0.02,ppa_tenor:7,merch_price:90,merch_esc:0.02,
+          capex:11148,opex_base:380,opex_esc:0.02,loan:4470,rate:0.105,tenor:7,
+          itc:0.40,fmv:13500,discount:0.08,soiling_loss:0.0,contingency_pct:0.05,
+          dscr_covenant:1.25,hurdle_rate:10.0,safe_harbor:true
+        },
+        suggestions:['Interest rate drops to 8.5%?','Revenue at $95/MWh','OPEX +20% impact','IA delay 6 months']
+      },
+      bsu: {
+        name: 'BSU Operating Portfolio', type: 'solar', status: 'Operating',
+        meta: 'C&I Solar · ~16.6 MWdc · CAISO · 20 Sites · California',
+        color: 'operating',
+        assets: [
+          {id:'all', name:'All Assets (Portfolio)', type:'summary'},
+          {id:'bressi', name:'Bressi', kw:270},
+          {id:'broadway', name:'Broadway', kw:438},
+          {id:'esplanade', name:'Esplanade', kw:1557},
+          {id:'hanford', name:'Hanford', kw:3804},
+          {id:'boronda', name:'Boronda', kw:900},
+          {id:'sandimas', name:'San Dimas', kw:576},
+          {id:'clovis', name:'Clovis', kw:480},
+          {id:'palmdale', name:'Palmdale', kw:1051},
+          {id:'blueOaks', name:'Blue Oaks', kw:1530},
+          {id:'oceanview', name:'Ocean View', kw:474},
+          {id:'vail', name:'Vail', kw:605},
+          {id:'puente', name:'Puente', kw:1428},
+          {id:'peco', name:'PECO', kw:360},
+          {id:'winery', name:'Winery', kw:300},
+          {id:'ymca', name:'YMCA', kw:213},
+          {id:'orland', name:'Orland', kw:580},
+          {id:'colusa', name:'Colusa', kw:570},
+          {id:'carmen', name:'Carmen', kw:542},
+          {id:'ftc', name:'FTC', kw:641}
+        ],
+        capital_stack: {'Term Loan':[18000],'Tax Equity':[14000],'Sponsor Equity':[13000]},
+        params: {
+          'Asset Type':'C&I Solar Portfolio','Grid Operator':'CAISO',
+          'Location':'California — 20 sites','Status':'Operating',
+          'Total Installed':'16,592 kWdc','Avg Availability':'98.7%',
+          'P50 Performance':'+2.1% YTD','ITC Rate':'30%','Hurdle Rate':'9.0%'
+        },
+        a: {
+          mwdc:16.6,yield_kwh:1850,avail:0.987,degrad:0.005,curtail:0.005,life:35,
+          ppa_price:72,ppa_esc:0.02,ppa_tenor:20,merch_price:75,merch_esc:0.015,
+          capex:45000,opex_base:820,opex_esc:0.025,loan:18000,rate:0.075,tenor:15,
+          itc:0.30,fmv:58000,discount:0.08,soiling_loss:0.03,contingency_pct:0.0,
+          dscr_covenant:1.20,hurdle_rate:9.0,safe_harbor:true
+        },
+        suggestions:['Blended portfolio IRR?','3 sites underperform P50 by 8%','Refinance at SOFR+1.75%','Degradation accelerates to 0.7%']
+      }
+    };
+    
+    // ── STATE ─────────────────────────────────────────────────────────────────────
+    let curDeal = null;
+    let curAsset = 'all';
+    let modelResult = null;
+    let auditLog = [];
+    
+    // ── NAVIGATION ────────────────────────────────────────────────────────────────
+    function go(id, btn) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('s-'+id).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      const titles = {
+        home:['Deal Summary','Arcadian Infrastructure Partners — Active Pipeline'],
+        overview:['Asset Overview','Capital stack, parameters, and cash flow'],
+        assumptions:['Assumptions','Edit any value — changes logged automatically'],
+        model:['Financial Model','35-year annual projections'],
+        engineering:['Engineering & Risk Flags','Automated flags based on benchmarks'],
+        chat:['Analyst Chat','Change assumptions via natural language'],
+        memo:['Investment Memo','Auto-generated deal recommendation']
+      };
+      const t = titles[id] || ['SolarLedger',''];
+      document.getElementById('top-title').textContent = t[0];
+      document.getElementById('top-sub').textContent = t[1];
+      const isHome = id === 'home';
+      document.getElementById('btn-export').style.display = isHome ? 'none' : 'inline-flex';
+      document.getElementById('btn-recalc').style.display = isHome ? 'none' : 'inline-flex';
+      if (id === 'memo' && modelResult) renderMemo();
+    }
+    
+    // ── HOME DASHBOARD ────────────────────────────────────────────────────────────
+    function renderHome() {
+      document.getElementById('home-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+      const cards = document.getElementById('deal-cards');
+      const tblBody = document.getElementById('portfolio-tbl-body');
+      cards.innerHTML = '';
+      tblBody.innerHTML = '';
+    
+      Object.entries(DEALS).forEach(([id, d]) => {
+        const r = runModelLocal(d.a);
+        const flags = r.flags || [];
+        const crit = flags.filter(f=>f.severity==='critical').length;
+        const maj = flags.filter(f=>f.severity==='major').length;
+        const irr = r.irr ? r.irr.toFixed(1)+'%' : 'N/A';
+        const npv = r.npv ? '$'+Math.round(r.npv/1000).toLocaleString()+'K' : 'N/A';
+        const irrColor = r.irr && r.irr >= d.a.hurdle_rate ? 'green' : 'red';
+        const statusBadge = {
+          'Late-Stage Development':'badge-amber',
+          'Near-Term Operating':'badge-blue',
+          'Mid-Stage Development':'badge-amber',
+          'Operating':'badge-green'
+        }[d.status] || 'badge-blue';
+    
+        // Deal card
+        cards.innerHTML += `
+          <div class="deal-card-big ${d.color}" onclick="openDeal('${id}')">
+            <div class="deal-card-top">
+              <div>
+                <div class="deal-card-name">${d.name}</div>
+                <div class="deal-card-meta">${d.meta}</div>
+              </div>
+              <span class="badge ${statusBadge}">${d.status}</span>
+            </div>
+            <div class="deal-card-metrics">
+              <div class="dcm"><div class="dcm-label">Levered IRR</div><div class="dcm-value ${irrColor}">${irr}</div></div>
+              <div class="dcm"><div class="dcm-label">NPV @ 8%</div><div class="dcm-value blue">${npv}</div></div>
+              <div class="dcm"><div class="dcm-label">Min DSCR</div><div class="dcm-value amber">${r.min_dscr ? r.min_dscr.toFixed(2)+'x' : '—'}</div></div>
+              <div class="dcm"><div class="dcm-label">CapEx</div><div class="dcm-value">${'$'+Math.round(d.a.capex/1000).toLocaleString()+'M'}</div></div>
+            </div>
+            <div class="deal-card-footer">
+              <div class="deal-card-flags">
+                ${crit > 0 ? `<span class="flag-pill critical">${crit} Critical</span>` : ''}
+                ${maj > 0 ? `<span class="flag-pill major">${maj} Major</span>` : ''}
+                ${crit===0&&maj===0 ? '<span class="flag-pill clear">✓ No critical flags</span>' : ''}
+              </div>
+              <span class="deal-card-open">Open →</span>
+            </div>
+          </div>`;
+    
+        // Portfolio table row
+        tblBody.innerHTML += `
+          <tr style="cursor:pointer" onclick="openDeal('${id}')">
+            <td class="bold">${d.name}</td>
+            <td>${
+                <script>
 // ── DEAL DATA ────────────────────────────────────────────────────────────────
 const DEALS = {
   yarotek: {
-    name: 'Yarotek Portfolio',
+    name: 'Yarotek Portfolio', type: 'solar', cardType: 'solar',
     meta: 'Utility-Scale Solar · 253 MWdc · Duke Energy Carolinas · NC · COD Q4 2029',
-    type: 'solar', status: 'Late-Stage Development',
+    status: 'Late-Stage Development',
     assets: [
-      {id:'portfolio', name:'Portfolio Summary', type:'summary'},
-      {id:'cheyenne', name:'Cheyenne River Ranch', mwdc:253, yield_kwh:1990, status:'active'},
-      {id:'nye', name:'NYE', mwdc:60, yield_kwh:2023, status:'development'},
-      {id:'lewis', name:'Lewis', mwdc:20, yield_kwh:1950, status:'development'},
-      {id:'gardner', name:'Gardner', mwdc:18, yield_kwh:1960, status:'development'},
-      {id:'canton', name:'Canton', mwdc:22, yield_kwh:1940, status:'development'},
-      {id:'hatcher', name:'Hatcher', mwdc:19, yield_kwh:1970, status:'development'},
-      {id:'red_oak', name:'Red Oak', mwdc:21, yield_kwh:1955, status:'development'},
-      {id:'upton', name:'Upton Farms', mwdc:17, yield_kwh:1980, status:'development'},
-      {id:'bentley', name:'Bentley Farms', mwdc:23, yield_kwh:1945, status:'development'},
-      {id:'kitchen', name:'Kitchen Farms', mwdc:16, yield_kwh:1990, status:'development'},
-      {id:'samra', name:'Samra', mwdc:18, yield_kwh:1965, status:'development'},
-      {id:'joann', name:'Jo Ann Scarlett Smith', mwdc:15, yield_kwh:1975, status:'development'},
-      {id:'shalimar', name:'Shalimar Farms', mwdc:20, yield_kwh:1960, status:'development'},
-      {id:'ravi', name:'Ravi Reddi / Regency Farms', mwdc:17, yield_kwh:1970, status:'development'},
+      {id:'all', name:'All Assets (Portfolio)'},
+      {id:'cheyenne', name:'Cheyenne River Ranch', mwdc:253, yield_kwh:1990},
+      {id:'nye', name:'NYE', mwdc:60, yield_kwh:2023},
+      {id:'lewis', name:'Lewis', mwdc:20, yield_kwh:1950},
+      {id:'gardner', name:'Gardner', mwdc:18, yield_kwh:1960},
+      {id:'canton', name:'Canton', mwdc:22, yield_kwh:1940},
+      {id:'hatcher', name:'Hatcher', mwdc:19, yield_kwh:1970},
+      {id:'red_oak', name:'Red Oak', mwdc:21, yield_kwh:1955},
+      {id:'upton', name:'Upton Farms', mwdc:17, yield_kwh:1980},
+      {id:'bentley', name:'Bentley Farms', mwdc:23, yield_kwh:1945},
+      {id:'kitchen', name:'Kitchen Farms', mwdc:16, yield_kwh:1990},
+      {id:'samra', name:'Samra', mwdc:18, yield_kwh:1965},
+      {id:'joann', name:'Jo Ann Scarlett Smith', mwdc:15, yield_kwh:1975},
+      {id:'shalimar', name:'Shalimar Farms', mwdc:20, yield_kwh:1960},
+      {id:'ravi', name:'Ravi Reddi / Regency Farms', mwdc:17, yield_kwh:1970},
     ],
     capital_stack: {
-      'TEBL / TRABL':    [123980, null],
-      'Back Leverage':   [144700, null],
-      'Preferred Equity':[99754,  null],
-      'Cash Equity':     [22388,  null],
+      'TEBL / TRABL':[123980],'Back Leverage':[144700],
+      'Preferred Equity':[99754],'Cash Equity':[22388]
     },
     params: {
-      'Asset Type':    'Utility-Scale Solar',
-      'Grid Operator': 'Duke Energy Carolinas',
-      'Location':      'Hoke & Robeson Co., NC',
-      'COD Target':    'Q4 2029',
-      'NTP Date':      'Sep 2028',
-      'Asset Life':    '35 years',
-      'ITC Rate':      '40% (30% base + 10% DC adder)',
-      'Safe Harbor':   'Confirmed',
-      'PPA Tenor':     '25 years',
-      'Hurdle Rate':   '10.0%',
+      'Asset Type':'Utility-Scale Solar','Grid Operator':'Duke Energy Carolinas',
+      'Location':'Hoke & Robeson Co., NC','COD Target':'Q4 2029',
+      'ITC Rate':'40%','Safe Harbor':'Confirmed','PPA Tenor':'25 years','Hurdle Rate':'10.0%'
     },
     a: {
-      mwdc:253, yield_kwh:1990, avail:0.985, degrad:0.004,
-      curtail:0.02, life:35,
-      ppa_price:59, ppa_esc:0.0, ppa_tenor:25,
-      merch_price:65, merch_esc:0.015,
-      capex:367873, opex_base:8200, opex_esc:0.023,
-      loan:175000, rate:0.0775, tenor:20,
-      itc:0.40, fmv:475020, discount:0.08,
-      soiling_loss:0.015, contingency_pct:0.035,
-      dscr_covenant:1.25, hurdle_rate:10.0, safe_harbor:true,
+      mwdc:253,yield_kwh:1990,avail:0.985,degrad:0.004,curtail:0.02,life:35,
+      ppa_price:59,ppa_esc:0.0,ppa_tenor:25,merch_price:65,merch_esc:0.015,
+      capex:367873,opex_base:8200,opex_esc:0.023,loan:175000,rate:0.0775,tenor:20,
+      itc:0.40,fmv:475020,discount:0.08,soiling_loss:0.015,contingency_pct:0.035,
+      dscr_covenant:1.25,hurdle_rate:10.0,safe_harbor:true
     },
-    suggestions: [
-      'Change merchant price to $70/MWh',
-      'What happens if degradation is 0.5%/yr?',
-      'Increase OPEX by 15% across all years',
-      'Run bear case: merchant price -20%',
-    ]
+    suggestions:['Change merchant price to $70/MWh','What if degradation is 0.5%?','Increase OPEX by 15%','Bear case: merchant -20%']
   },
   foley: {
-    name: 'Foley Solar (LUIS)',
+    name: 'Foley Solar (LUIS)', type: 'solar', cardType: 'solar',
     meta: 'Utility-Scale Solar · 106 MWdc · SERC · Baldwin County, AL · COD Q1 2026',
-    type: 'solar', status: 'Near-Term Operating',
+    status: 'Near-Term Operating',
     assets: [
-      {id:'portfolio', name:'Portfolio Summary', type:'summary'},
-      {id:'foley_main', name:'Foley Solar', mwdc:106, yield_kwh:1720, status:'active'},
+      {id:'all', name:'All Assets (Portfolio)'},
+      {id:'foley_main', name:'Foley Solar', mwdc:106, yield_kwh:1720},
     ],
-    capital_stack: {
-      'Tax Equity':    [65000, null],
-      'Permanent Debt':[65000, null],
-      'Sponsor Equity':[30734, null],
-    },
+    capital_stack: {'Tax Equity':[65000],'Permanent Debt':[65000],'Sponsor Equity':[30734]},
     params: {
-      'Asset Type':    'Utility-Scale Solar',
-      'Grid Operator': 'SERC',
-      'Location':      'Baldwin County, Alabama',
-      'COD Target':    'Q1 2026',
-      'NTP Date':      'Nov 2025',
-      'Asset Life':    '40 years',
-      'ITC Rate':      '40%',
-      'TE Structure':  'Partnership Flip',
-      'PPA Tenor':     '17 years',
-      'Hurdle Rate':   '10.0%',
+      'Asset Type':'Utility-Scale Solar','Grid Operator':'SERC',
+      'Location':'Baldwin County, Alabama','COD Target':'Q1 2026',
+      'ITC Rate':'40%','TE Structure':'Partnership Flip','PPA Tenor':'17 years','Hurdle Rate':'10.0%'
     },
     a: {
-      mwdc:106, yield_kwh:1720, avail:0.98, degrad:0.004,
-      curtail:0.02, life:40,
-      ppa_price:52, ppa_esc:0.01, ppa_tenor:17,
-      merch_price:58, merch_esc:0.015,
-      capex:160734, opex_base:2800, opex_esc:0.02,
-      loan:65000, rate:0.078, tenor:18,
-      itc:0.40, fmv:205000, discount:0.08,
-      soiling_loss:0.02, contingency_pct:0.05,
-      dscr_covenant:1.25, hurdle_rate:10.0, safe_harbor:true,
+      mwdc:106,yield_kwh:1720,avail:0.98,degrad:0.004,curtail:0.02,life:40,
+      ppa_price:52,ppa_esc:0.01,ppa_tenor:17,merch_price:58,merch_esc:0.015,
+      capex:160734,opex_base:2800,opex_esc:0.02,loan:65000,rate:0.078,tenor:18,
+      itc:0.40,fmv:205000,discount:0.08,soiling_loss:0.02,contingency_pct:0.05,
+      dscr_covenant:1.25,hurdle_rate:10.0,safe_harbor:true
     },
-    suggestions: [
-      'What if PPA price drops to $48/MWh?',
-      'Model interest rate at 9.0%',
-      'What happens at P90 yield?',
-      'Show IRR sensitivity to CapEx +10%',
-    ]
+    suggestions:['What if PPA drops to $48/MWh?','Model interest at 9.0%','What at P90 yield?','IRR sensitivity to CapEx +10%']
   },
   bess: {
-    name: 'Project Genesis (DG BESS)',
+    name: 'Project Genesis (DG BESS)', type: 'bess', cardType: 'bess',
     meta: 'Battery Storage · 5 MW / 20 MWh · NY ISO · 4 Sites · COD Nov 2028',
-    type: 'bess', status: 'Mid-Stage Development',
+    status: 'Mid-Stage Development',
     assets: [
-      {id:'portfolio', name:'Portfolio Summary', type:'summary'},
-      {id:'bronx', name:'Bronx', mw:1.25, mwh:5, status:'development'},
-      {id:'peekskill', name:'Peekskill', mw:1.25, mwh:5, status:'development'},
-      {id:'kitchen_bess', name:'Kitchen Farms', mw:1.25, mwh:5, status:'active'},
-      {id:'bracero', name:'Bracero Pecan', mw:1.25, mwh:5, status:'development'},
+      {id:'all', name:'All Assets (Portfolio)'},
+      {id:'bronx', name:'Bronx', mw:1.25, mwh:5},
+      {id:'peekskill', name:'Peekskill', mw:1.25, mwh:5},
+      {id:'kitchen_bess', name:'Kitchen Farms', mw:1.25, mwh:5},
+      {id:'bracero', name:'Bracero Pecan', mw:1.25, mwh:5},
     ],
     capital_stack: {
-      'TEBL / TRABL':    [3524,  null],
-      'Back Leverage':   [4470,  null],
-      'Preferred Equity':[1885,  null],
-      'Cash Equity':     [1743,  null],
+      'TEBL / TRABL':[3524],'Back Leverage':[4470],
+      'Preferred Equity':[1885],'Cash Equity':[1743]
     },
     params: {
-      'Asset Type':    'Battery Energy Storage (BESS)',
-      'Grid Operator': 'NY ISO',
-      'Location':      'New York — 4 Sites',
-      'Active Case':   'Kitchen Farms',
-      'Duration':      '4 hours (20 MWh total)',
-      'COD Target':    'Nov 2028',
-      'NTP Date':      'Feb 2028',
-      'Asset Life':    '30 years',
-      'ITC Rate':      '40% (30% base + 10% DC adder)',
-      'Interest Rate': 'SOFR + 5.50%',
-      'IA Status':     '⚠ Pending',
+      'Asset Type':'Battery Storage (BESS)','Grid Operator':'NY ISO',
+      'Location':'New York — 4 Sites','Duration':'4 hours (20 MWh)',
+      'COD Target':'Nov 2028','ITC Rate':'40%','IA Status':'⚠ Pending'
     },
     a: {
-      mwdc:5, yield_kwh:1460, avail:0.97, degrad:0.025,
-      curtail:0.0, life:30,
-      ppa_price:85, ppa_esc:0.02, ppa_tenor:7,
-      merch_price:90, merch_esc:0.02,
-      capex:11148, opex_base:380, opex_esc:0.02,
-      loan:4470, rate:0.105, tenor:7,
-      itc:0.40, fmv:13500, discount:0.08,
-      soiling_loss:0.0, contingency_pct:0.05,
-      dscr_covenant:1.25, hurdle_rate:10.0, safe_harbor:true,
+      mwdc:5,yield_kwh:1460,avail:0.97,degrad:0.025,curtail:0.0,life:30,
+      ppa_price:85,ppa_esc:0.02,ppa_tenor:7,merch_price:90,merch_esc:0.02,
+      capex:11148,opex_base:380,opex_esc:0.02,loan:4470,rate:0.105,tenor:7,
+      itc:0.40,fmv:13500,discount:0.08,soiling_loss:0.0,contingency_pct:0.05,
+      dscr_covenant:1.25,hurdle_rate:10.0,safe_harbor:true
     },
-    suggestions: [
-      'What if interest rate drops to 8.5%?',
-      'Change revenue assumption to $95/MWh',
-      'What is DSCR if OPEX increases 20%?',
-      'Model IA execution delay of 6 months',
-    ]
+    suggestions:['What if rate drops to 8.5%?','Change revenue to $95/MWh','DSCR if OPEX +20%?','IA delay 6 months']
   },
   bsu: {
-    name: 'BSU Operating Portfolio',
+    name: 'BSU Operating Portfolio', type: 'solar', cardType: 'operating',
     meta: 'C&I Solar · ~16.6 MWdc · CAISO · 20 Sites · California · Operating',
-    type: 'solar', status: 'Operating',
+    status: 'Operating',
     assets: [
-      {id:'portfolio', name:'Portfolio Summary', type:'summary'},
-      {id:'bressi', name:'Bressi', kw:270, status:'operating'},
-      {id:'broadway', name:'Broadway', kw:438, status:'operating'},
-      {id:'esplanade', name:'Esplanade', kw:1557, status:'operating'},
-      {id:'hanford', name:'Hanford', kw:3804, status:'operating'},
-      {id:'boronda', name:'Boronda', kw:900, status:'operating'},
-      {id:'sandimas', name:'San Dimas', kw:576, status:'operating'},
-      {id:'clovis', name:'Clovis', kw:480, status:'operating'},
-      {id:'palmdale', name:'Palmdale', kw:1051, status:'operating'},
-      {id:'blueOaks', name:'Blue Oaks', kw:1530, status:'operating'},
-      {id:'oceanview', name:'Ocean View', kw:474, status:'operating'},
-      {id:'vail', name:'Vail', kw:605, status:'operating'},
-      {id:'puente', name:'Puente', kw:1428, status:'operating'},
-      {id:'peco', name:'PECO', kw:360, status:'operating'},
-      {id:'winery', name:'Winery', kw:300, status:'operating'},
-      {id:'ymca', name:'YMCA', kw:213, status:'operating'},
-      {id:'orland', name:'Orland', kw:580, status:'operating'},
-      {id:'colusa', name:'Colusa', kw:570, status:'operating'},
-      {id:'carmen', name:'Carmen', kw:542, status:'operating'},
-      {id:'ftc', name:'FTC', kw:641, status:'operating'},
+      {id:'all', name:'All Assets (Portfolio)'},
+      {id:'bressi', name:'Bressi', kw:270},
+      {id:'broadway', name:'Broadway', kw:438},
+      {id:'esplanade', name:'Esplanade', kw:1557},
+      {id:'hanford', name:'Hanford', kw:3804},
+      {id:'boronda', name:'Boronda', kw:900},
+      {id:'sandimas', name:'San Dimas', kw:576},
+      {id:'clovis', name:'Clovis', kw:480},
+      {id:'palmdale', name:'Palmdale', kw:1051},
+      {id:'blueOaks', name:'Blue Oaks', kw:1530},
+      {id:'oceanview', name:'Ocean View', kw:474},
+      {id:'vail', name:'Vail', kw:605},
+      {id:'puente', name:'Puente', kw:1428},
+      {id:'peco', name:'PECO', kw:360},
+      {id:'winery', name:'Winery', kw:300},
+      {id:'ymca', name:'YMCA', kw:213},
+      {id:'orland', name:'Orland', kw:580},
+      {id:'colusa', name:'Colusa', kw:570},
+      {id:'carmen', name:'Carmen', kw:542},
+      {id:'ftc', name:'FTC', kw:641},
     ],
-    capital_stack: {
-      'Term Loan':     [18000, null],
-      'Tax Equity':    [14000, null],
-      'Sponsor Equity':[13000, null],
-    },
+    capital_stack: {'Term Loan':[18000],'Tax Equity':[14000],'Sponsor Equity':[13000]},
     params: {
-      'Asset Type':      'C&I Solar Portfolio',
-      'Grid Operator':   'CAISO',
-      'Location':        'California — 20 sites',
-      'Status':          'Operating',
-      'Total Installed': '16,592 kWdc',
-      'Avg Availability':'98.7%',
-      'P50 Performance': '+2.1% YTD',
-      'ITC Rate':        '30%',
-      'Hurdle Rate':     '9.0%',
+      'Asset Type':'C&I Solar Portfolio','Grid Operator':'CAISO',
+      'Location':'California — 20 sites','Status':'Operating',
+      'Avg Availability':'98.7%','P50 YTD':'+2.1%','ITC Rate':'30%','Hurdle Rate':'9.0%'
     },
     a: {
-      mwdc:16.6, yield_kwh:1850, avail:0.987, degrad:0.005,
-      curtail:0.005, life:35,
-      ppa_price:72, ppa_esc:0.02, ppa_tenor:20,
-      merch_price:75, merch_esc:0.015,
-      capex:45000, opex_base:820, opex_esc:0.025,
-      loan:18000, rate:0.075, tenor:15,
-      itc:0.30, fmv:58000, discount:0.08,
-      soiling_loss:0.03, contingency_pct:0.0,
-      dscr_covenant:1.20, hurdle_rate:9.0, safe_harbor:true,
+      mwdc:16.6,yield_kwh:1850,avail:0.987,degrad:0.005,curtail:0.005,life:35,
+      ppa_price:72,ppa_esc:0.02,ppa_tenor:20,merch_price:75,merch_esc:0.015,
+      capex:45000,opex_base:820,opex_esc:0.025,loan:18000,rate:0.075,tenor:15,
+      itc:0.30,fmv:58000,discount:0.08,soiling_loss:0.03,contingency_pct:0.0,
+      dscr_covenant:1.20,hurdle_rate:9.0,safe_harbor:true
     },
-    suggestions: [
-      'What is blended portfolio IRR?',
-      'Model 3 sites underperforming P50 by 8%',
-      'Refinance scenario at SOFR+1.75%',
-      'What if degradation accelerates to 0.7%?',
-    ]
+    suggestions:['Blended portfolio IRR?','3 sites underperform P50 by 8%','Refi at SOFR+1.75%','Degradation accelerates to 0.7%']
   }
 };
 
-// ── STATE ────────────────────────────────────────────────────────────────────
-let curDeal = 'yarotek';
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let curDeal = null;
+let curAsset = 'all';
 let modelResult = null;
 let auditLog = [];
-let curAsset = 'portfolio';
 
-// ── NAVIGATION ───────────────────────────────────────────────────────────────
-const SCREENS = ['overview','assumptions','model','engineering','chat'];
-const TITLES = [
-  ['Deal Overview','Summary, capital stack, and cash flow chart'],
-  ['Assumptions','Edit any assumption — changes logged automatically'],
-  ['Financial Model','35-year annual projections'],
-  ['Engineering & Risk Flags','Automated flags based on benchmarks'],
-  ['Analyst Chat','Change assumptions via natural language'],
-];
-
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
 function go(id, btn) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s-'+id).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  const idx = SCREENS.indexOf(id);
-  document.getElementById('top-title').textContent = TITLES[idx][0];
-  document.getElementById('top-sub').textContent = TITLES[idx][1];
+  const titles = {
+    home:['Deal Summary','Arcadian Infrastructure Partners — Active Pipeline'],
+    overview:['Asset Overview','Capital stack, parameters, and cash flow'],
+    assumptions:['Assumptions','Edit any value — changes logged automatically'],
+    model:['Financial Model','35-year annual projections'],
+    engineering:['Engineering & Risk Flags','Automated flags based on benchmarks'],
+    chat:['Analyst Chat','Change assumptions via natural language'],
+    memo:['Investment Memo','Auto-generated recommendation — click to edit'],
+  };
+  const t = titles[id] || ['SolarLedger',''];
+  document.getElementById('top-title').textContent = t[0];
+  document.getElementById('top-sub').textContent = t[1];
+  const showActions = id !== 'home';
+  document.getElementById('btn-export').style.display = showActions ? 'block' : 'none';
+  document.getElementById('btn-recalc').style.display = showActions ? 'block' : 'none';
+  if (id === 'memo' && curDeal) generateMemo();
 }
 
-// ── LOAD DEAL ────────────────────────────────────────────────────────────────
+// ── HOME DASHBOARD ────────────────────────────────────────────────────────────
+function buildHomeDashboard() {
+  document.getElementById('home-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const grid = document.getElementById('deal-cards');
+  const tbody = document.getElementById('portfolio-tbl-body');
+  grid.innerHTML = '';
+  tbody.innerHTML = '';
+
+  Object.entries(DEALS).forEach(([id, d]) => {
+    const r = runModelLocal(d.a);
+    const flags = r.flags || [];
+    const crit = flags.filter(f=>f.severity==='critical').length;
+    const maj = flags.filter(f=>f.severity==='major').length;
+    const irrOk = r.irr && r.irr >= d.a.hurdle_rate;
+    const total = Object.values(d.capital_stack).reduce((s,[v])=>s+v,0);
+
+    // Card
+    const card = document.createElement('div');
+    card.className = `deal-card-big ${d.cardType}`;
+    card.onclick = () => loadDeal(id);
+    const flagHTML = crit > 0
+      ? `<span class="flag-pill critical">${crit} Critical</span>`
+      : maj > 0
+      ? `<span class="flag-pill major">${maj} Major</span>`
+      : `<span class="flag-pill clear">✓ No critical flags</span>`;
+    card.innerHTML = `
+      <div class="deal-card-top">
+        <div>
+          <div class="deal-card-name">${d.name}</div>
+          <div class="deal-card-meta">${d.meta}</div>
+        </div>
+        <span class="badge ${d.status==='Operating'?'badge-green':d.status.includes('Late')?'badge-blue':'badge-amber'}">${d.status}</span>
+      </div>
+      <div class="deal-card-metrics">
+        <div class="dcm">
+          <div class="dcm-label">Levered IRR</div>
+          <div class="dcm-value ${irrOk?'green':'red'}">${r.irr?r.irr.toFixed(1)+'%':'N/A'}</div>
+        </div>
+        <div class="dcm">
+          <div class="dcm-label">NPV @ 8%</div>
+          <div class="dcm-value blue">${r.npv?'$'+Math.round(r.npv/1000).toLocaleString()+'K':'N/A'}</div>
+        </div>
+        <div class="dcm">
+          <div class="dcm-label">Total CapEx</div>
+          <div class="dcm-value">${'$'+(d.a.capex/1000).toFixed(0)+'M'}</div>
+        </div>
+        <div class="dcm">
+          <div class="dcm-label">Min DSCR</div>
+          <div class="dcm-value ${r.min_dscr>=d.a.dscr_covenant?'green':'red'}">${r.min_dscr?r.min_dscr.toFixed(2)+'x':'N/A'}</div>
+        </div>
+      </div>
+      <div class="deal-card-footer">
+        <div class="deal-card-flags">${flagHTML}</div>
+        <span class="deal-card-open">Open Deal →</span>
+      </div>`;
+    grid.appendChild(card);
+
+    // Table row
+    const irrColor = irrOk ? 'mv-green' : 'mv-red';
+    tbody.innerHTML += `<tr>
+      <td class="bold">${d.name}</td>
+      <td>${d.type==='bess'?'BESS':'Solar'}</td>
+      <td><span class="badge ${d.status==='Operating'?'badge-green':d.status.includes('Late')?'badge-blue':'badge-amber'}">${d.status}</span></td>
+      <td class="num">$${(d.a.capex/1000).toFixed(0)}M</td>
+      <td class="num ${irrColor}">${r.irr?r.irr.toFixed(1)+'%':'N/A'}</td>
+      <td class="num">${r.npv?'$'+Math.round(r.npv/1000).toLocaleString()+'K':'N/A'}</td>
+      <td class="num">${r.min_dscr?r.min_dscr.toFixed(2)+'x':'N/A'}</td>
+      <td class="num">${crit>0?'<span class="badge badge-red">'+crit+' crit</span>':maj>0?'<span class="badge badge-amber">'+maj+' major</span>':'<span class="badge badge-green">Clear</span>'}</td>
+    </tr>`;
+  });
+}
+
+// ── LOAD DEAL ─────────────────────────────────────────────────────────────────
 function loadDeal(id) {
+  if (!id || id === 'home') {
+    curDeal = null;
+    document.getElementById('deal-nav').style.display = 'none';
+    document.getElementById('asset-select-group').style.display = 'none';
+    document.getElementById('deal-select').value = 'home';
+    go('home', document.getElementById('nav-home'));
+    return;
+  }
   curDeal = id;
+  curAsset = 'all';
   const d = DEALS[id];
+  document.getElementById('deal-select').value = id;
+  document.getElementById('deal-nav').style.display = 'block';
+
+  // Build asset dropdown
+  const asel = document.getElementById('asset-select');
+  asel.innerHTML = d.assets.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+  document.getElementById('asset-select-group').style.display = 'block';
+
+  // Populate deal info
   document.getElementById('deal-name').textContent = d.name;
   document.getElementById('deal-meta').textContent = d.meta;
 
   // Capital stack
-  const total = Object.values(d.capital_stack).reduce((s,[v]) => s+v, 0);
+  const total = Object.values(d.capital_stack).reduce((s,[v])=>s+v,0);
   document.getElementById('capstack-body').innerHTML =
     Object.entries(d.capital_stack).map(([k,[v]]) =>
       `<tr><td>${k}</td><td class="num">$${v.toLocaleString()}</td><td class="num">${(v/total*100).toFixed(1)}%</td></tr>`
@@ -684,7 +1042,7 @@ function loadDeal(id) {
       `<tr><td class="bold">${k}</td><td>${v}</td></tr>`
     ).join('');
 
-  // Assumptions inputs
+  // Fill assumptions
   const a = d.a;
   setVal('a-mwdc', a.mwdc);
   setVal('a-yield', a.yield_kwh);
@@ -707,167 +1065,103 @@ function loadDeal(id) {
   setVal('a-itc', (a.itc*100).toFixed(0)+'%');
   setVal('a-fmv', a.fmv.toLocaleString());
 
-  // Chat suggestions
+  // Chat
   document.getElementById('chat-suggs').innerHTML =
-    d.suggestions.map(s => `<div class="sugg" onclick="useSugg(this)">${s}</div>`).join('');
-
-  // Init chat
+    d.suggestions.map(s=>`<div class="sugg" onclick="useSugg(this)">${s}</div>`).join('');
   document.getElementById('chat-msgs').innerHTML = `
     <div class="msg ai">
       <div class="msg-av ai">SL</div>
-      <div class="msg-bubble">Model loaded: <strong>${d.name}</strong> (${d.meta}). Ready to recalculate. What would you like to adjust?</div>
+      <div class="msg-bubble">Model loaded: <strong>${d.name}</strong>. Ready to analyze. What would you like to adjust?</div>
     </div>`;
 
   auditLog = [];
   document.getElementById('audit-log').innerHTML = '<div style="font-size:11px;color:var(--text3);padding:4px 0">No changes yet.</div>';
+  document.getElementById('audit-trail').innerHTML = '<div style="font-size:11px;color:var(--text3)">No changes yet.</div>';
 
+  go('overview', document.querySelectorAll('#deal-nav .nav-item')[0]);
   runModel();
-  curAsset = 'portfolio';
-  buildAssetTabs(d);
 }
 
-function buildAssetTabs(d) {
-  const list = document.getElementById('asset-tab-list');
-  if (!d.assets || !d.assets.length) {
-    document.getElementById('asset-tabs').style.display = 'none';
-    return;
-  }
-  document.getElementById('asset-tabs').style.display = 'block';
-  list.innerHTML = d.assets.map(a => `
-    <button class="asset-tab ${a.type==='summary'?'portfolio':''} ${a.id===curAsset?'active':''}"
-      onclick="selectAsset('${a.id}')">
-      <span class="tab-dot"></span>
-      ${a.name}
-      ${a.kw ? `<span class="asset-badge">${(a.kw/1000).toFixed(1)} MW</span>` :
-        a.mwdc ? `<span class="asset-badge">${a.mwdc} MWdc</span>` :
-        a.mw ? `<span class="asset-badge">${a.mw} MW</span>` : ''}
-    </button>`).join('');
-}
-
+// ── ASSET SELECTOR ────────────────────────────────────────────────────────────
 function selectAsset(id) {
   curAsset = id;
+  if (!curDeal) return;
   const d = DEALS[curDeal];
-  // Update tab highlighting
-  document.querySelectorAll('.asset-tab').forEach(t => {
-    t.classList.toggle('active', t.getAttribute('onclick').includes(`'${id}'`));
-  });
   const asset = d.assets.find(a => a.id === id);
   if (!asset) return;
-  if (asset.type === 'summary') {
-    renderPortfolioSummary(d);
-  } else {
-    renderAssetView(asset, d);
-  }
-}
 
-function renderAssetView(asset, deal) {
-  // Update deal name and meta
-  document.getElementById('deal-name').textContent = asset.name;
+  if (id === 'all') {
+    document.getElementById('deal-name').textContent = d.name;
+    document.getElementById('deal-meta').textContent = d.meta;
+    document.getElementById('model-sub').textContent = 'All figures in $\'000. Portfolio-level view.';
+    runModel();
+    return;
+  }
+
+  // Asset-level view
   const size = asset.mwdc ? `${asset.mwdc} MWdc` :
                asset.mw ? `${asset.mw} MW / ${asset.mwh} MWh` :
                asset.kw ? `${asset.kw} kWdc` : '';
-  document.getElementById('deal-meta').textContent =
-    `${deal.name} · ${size} · ${deal.params['Grid Operator']} · ${asset.status}`;
+  document.getElementById('deal-name').textContent = asset.name;
+  document.getElementById('deal-meta').textContent = `${d.name} · ${size} · ${d.params['Grid Operator']}`;
+  document.getElementById('model-sub').textContent = `All figures in $'000. Asset: ${asset.name}`;
 
-  // Build asset-specific assumptions by scaling from portfolio
-  const scale = asset.mwdc ? asset.mwdc / deal.a.mwdc :
-                asset.mw ? asset.mw / deal.a.mwdc :
-                asset.kw ? (asset.kw/1000) / deal.a.mwdc : 1;
-  const assetAssumptions = {
-    ...deal.a,
-    mwdc: asset.mwdc || asset.mw || (asset.kw/1000) || deal.a.mwdc,
-    yield_kwh: asset.yield_kwh || deal.a.yield_kwh,
-    capex: Math.round(deal.a.capex * scale),
-    loan: Math.round(deal.a.loan * scale),
-    opex_base: Math.round(deal.a.opex_base * scale),
-    fmv: Math.round(deal.a.fmv * scale),
+  const scale = asset.mwdc ? asset.mwdc/d.a.mwdc :
+                asset.mw ? asset.mw/d.a.mwdc :
+                asset.kw ? (asset.kw/1000)/d.a.mwdc : 1;
+  const aa = {
+    ...d.a,
+    mwdc: asset.mwdc || asset.mw || (asset.kw/1000) || d.a.mwdc,
+    yield_kwh: asset.yield_kwh || d.a.yield_kwh,
+    capex: Math.round(d.a.capex*scale),
+    loan: Math.round(d.a.loan*scale),
+    opex_base: Math.round(d.a.opex_base*scale),
+    fmv: Math.round(d.a.fmv*scale),
   };
 
-  // Run model for this asset
-  const result = runModelLocal(assetAssumptions);
+  // Update assumption inputs to reflect asset
+  setVal('a-mwdc', aa.mwdc);
+  setVal('a-yield', aa.yield_kwh);
+  setVal('a-capex', aa.capex.toLocaleString());
+  setVal('a-opex', aa.opex_base.toLocaleString());
+  setVal('a-loan', aa.loan.toLocaleString());
+  setVal('a-fmv', aa.fmv.toLocaleString());
+
+  const result = runModelLocal(aa);
   renderModel(result);
 
-  // Update capital stack for this asset
-  const total = Object.values(deal.capital_stack).reduce((s,[v])=>s+v,0);
+  // Update capital stack
+  const total = Object.values(d.capital_stack).reduce((s,[v])=>s+v,0);
   document.getElementById('capstack-body').innerHTML =
-    Object.entries(deal.capital_stack).map(([k,[v]]) => {
-      const assetV = Math.round(v * scale);
-      return `<tr><td>${k}</td><td class="num">$${assetV.toLocaleString()}</td><td class="num">${(v/total*100).toFixed(1)}%</td></tr>`;
+    Object.entries(d.capital_stack).map(([k,[v]]) => {
+      const av = Math.round(v*scale);
+      return `<tr><td>${k}</td><td class="num">$${av.toLocaleString()}</td><td class="num">${(v/total*100).toFixed(1)}%</td></tr>`;
     }).join('') +
     `<tr class="tbl-total"><td class="bold">Asset Total</td><td class="num bold">$${Math.round(total*scale).toLocaleString()}</td><td class="num bold">—</td></tr>`;
 }
 
-function renderPortfolioSummary(deal) {
-  // Reset to full portfolio view
-  document.getElementById('deal-name').textContent = deal.name + ' — Portfolio Summary';
-  document.getElementById('deal-meta').textContent = deal.meta;
-
-  // Build portfolio summary table
-  const summaryRows = (deal.assets || []).filter(a => a.type !== 'summary').map(asset => {
-    const scale = asset.mwdc ? asset.mwdc / deal.a.mwdc :
-                  asset.mw ? asset.mw / deal.a.mwdc :
-                  asset.kw ? (asset.kw/1000) / deal.a.mwdc : 1;
-    const a = {
-      ...deal.a,
-      mwdc: asset.mwdc || asset.mw || (asset.kw/1000) || deal.a.mwdc,
-      yield_kwh: asset.yield_kwh || deal.a.yield_kwh,
-      capex: Math.round(deal.a.capex * scale),
-      loan: Math.round(deal.a.loan * scale),
-      opex_base: Math.round(deal.a.opex_base * scale),
-      fmv: Math.round(deal.a.fmv * scale),
-    };
-    const r = runModelLocal(a);
-    const size = asset.mwdc ? `${asset.mwdc} MWdc` :
-                 asset.mw ? `${asset.mw} MW` :
-                 asset.kw ? `${asset.kw} kW` : '—';
-    const irrColor = r.irr && r.irr >= deal.a.hurdle_rate ? 'mv-green' : 'mv-red';
-    return `<tr>
-      <td class="bold">${asset.name}</td>
-      <td>${size}</td>
-      <td>${asset.status}</td>
-      <td class="num ${irrColor}">${r.irr ? r.irr.toFixed(1)+'%' : 'N/A'}</td>
-      <td class="num">${r.min_dscr ? r.min_dscr.toFixed(2)+'x' : '—'}</td>
-      <td class="num">${r.npv ? '$'+Math.round(r.npv/1000).toLocaleString()+'K' : '—'}</td>
-      <td class="num">${r.payback ? r.payback+' yrs' : '—'}</td>
-    </tr>`;
-  }).join('');
-
-  // Inject portfolio summary into overview screen
-  const card = document.querySelector('#s-overview .card');
-  if (card) {
-    card.innerHTML = `
-      <div class="card-hd">Portfolio Summary — All Assets</div>
-      <div style="overflow-x:auto">
-        <table class="tbl" style="min-width:700px">
-          <thead><tr>
-            <th>Asset</th><th>Size</th><th>Status</th>
-            <th style="text-align:right">Levered IRR</th>
-            <th style="text-align:right">Min DSCR</th>
-            <th style="text-align:right">NPV @ 8%</th>
-            <th style="text-align:right">Payback</th>
-          </tr></thead>
-          <tbody>${summaryRows}</tbody>
-        </table>
-      </div>`;
+// ── RUN MODEL ─────────────────────────────────────────────────────────────────
+async function runModel() {
+  const a = getAssumptions();
+  try {
+    const res = await fetch('/api/model', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(a)
+    });
+    modelResult = await res.json();
+  } catch(e) {
+    modelResult = runModelLocal(a);
   }
-
-  // Run full portfolio model
-  const result = runModelLocal(deal.a);
-  renderModel(result);
+  renderModel(modelResult);
 }
 
-function setVal(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.value = val;
-}
-
-// ── GET CURRENT ASSUMPTIONS FROM INPUTS ──────────────────────────────────────
 function getAssumptions() {
+  if (!curDeal) return {};
   const d = DEALS[curDeal];
   const a = {...d.a};
-  const parse = (id, mult=1) => {
-    const v = document.getElementById(id)?.value?.replace(/[%,$,]/g,'').trim();
-    return v ? parseFloat(v) * mult : null;
+  const parse = id => {
+    const v = document.getElementById(id)?.value?.replace(/[%,$,\s]/g,'');
+    return v ? parseFloat(v) : null;
   };
   a.mwdc        = parse('a-mwdc') ?? a.mwdc;
   a.yield_kwh   = parse('a-yield') ?? a.yield_kwh;
@@ -892,40 +1186,16 @@ function getAssumptions() {
   return a;
 }
 
-// ── RUN MODEL ────────────────────────────────────────────────────────────────
-async function runModel() {
-  const a = getAssumptions();
-  // Show loading
-  ['ov-irr','ov-npv','ov-dscr','ov-payback','m-irr','m-npv','m-dscr','m-equity'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.innerHTML = '<div class="spinner" style="display:inline-block"></div>';
-  });
-
-  try {
-    const res = await fetch('/api/model', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(a)
-    });
-    modelResult = await res.json();
-    renderModel(modelResult);
-  } catch(e) {
-    // Fallback: run model client-side if API not available
-    modelResult = runModelLocal(a);
-    renderModel(modelResult);
-  }
-}
-
-// ── CLIENT-SIDE FALLBACK MODEL ────────────────────────────────────────────────
+// ── LOCAL MODEL ENGINE ────────────────────────────────────────────────────────
 function runModelLocal(a) {
-  const life = a.life;
+  const life = a.life || 35;
   const itc_proc = a.fmv * a.itc;
   const pref_eq = a.capex * 0.255;
   const eq_in = Math.max(a.capex - a.loan - itc_proc - pref_eq, a.capex * 0.057);
   const cfs = [-eq_in];
   const years = [];
 
-  for(let i=0; i<life; i++){
+  for (let i=0; i<life; i++) {
     const yr = i+1;
     const net = a.mwdc * a.yield_kwh * a.avail * Math.pow(1-a.degrad,i) * (1-a.curtail);
     const price = yr<=a.ppa_tenor
@@ -941,67 +1211,82 @@ function runModelLocal(a) {
     const dscr = ds>0 ? ebitda/ds : 99;
     const cfads = Math.max(ebitda-ds, 0);
     years.push({
-      year:yr,
-      net_mwh:Math.round(net),
-      price:Math.round(price*100)/100,
-      revenue:Math.round(rev),
-      opex:Math.round(opex),
-      ebitda:Math.round(ebitda),
-      ebitda_margin:rev>0 ? Math.round(ebitda/rev*1000)/10 : 0,
-      beg_bal:Math.round(beg),
-      amort:Math.round(amort),
-      interest:Math.round(interest),
-      ds:Math.round(ds),
-      dscr:Math.round(dscr*100)/100,
-      cfads:Math.round(cfads)
+      year:yr, net_mwh:Math.round(net), price:Math.round(price*100)/100,
+      revenue:Math.round(rev), opex:Math.round(opex), ebitda:Math.round(ebitda),
+      ebitda_margin:rev>0?Math.round(ebitda/rev*1000)/10:0,
+      beg_bal:Math.round(beg), amort:Math.round(amort), interest:Math.round(interest),
+      ds:Math.round(ds), dscr:Math.round(dscr*100)/100, cfads:Math.round(cfads)
     });
     cfs.push(cfads);
   }
 
   const irr = calcIRR(cfs);
-  const npv = cfs.slice(1).reduce((s,c,i) => s + c/Math.pow(1+a.discount,i+1), 0) - eq_in;
+  const npv = cfs.slice(1).reduce((s,c,i)=>s+c/Math.pow(1+a.discount,i+1),0) - eq_in;
   const min_dscr = Math.min(...years.filter(y=>y.ds>0).map(y=>y.dscr));
-  const payback = years.find(y => cfs.slice(1,y.year+1).reduce((s,c)=>s+c,0) > eq_in)?.year;
+  const payback = years.find(y=>cfs.slice(1,y.year+1).reduce((s,c)=>s+c,0)>eq_in)?.year;
   const flags = runFlagsLocal(a, irr, min_dscr);
 
   return {
     irr: irr ? Math.round(irr*10000)/100 : null,
     npv: Math.round(npv),
-    min_dscr: Math.round(min_dscr*100)/100,
-    payback,
-    equity_in: Math.round(eq_in),
+    min_dscr: isFinite(min_dscr) ? Math.round(min_dscr*100)/100 : 0,
+    payback, equity_in: Math.round(eq_in),
     itc_proceeds: Math.round(itc_proc),
-    years,
-    flags
+    years, flags
   };
 }
 
 function calcIRR(cfs) {
-  let r=0.1;
-  for(let i=0;i<100;i++){
-    const npv=cfs.reduce((s,c,t)=>s+c/Math.pow(1+r,t),0);
-    const dnpv=cfs.reduce((s,c,t)=>s-t*c/Math.pow(1+r,t+1),0);
-    const nr=r-npv/dnpv;
-    if(Math.abs(nr-r)<1e-8){return nr;}
-    r=nr;
+  let r = 0.1;
+  for (let i=0; i<200; i++) {
+    const npv = cfs.reduce((s,c,t)=>s+c/Math.pow(1+r,t),0);
+    const dnpv = cfs.reduce((s,c,t)=>s-t*c/Math.pow(1+r,t+1),0);
+    if (Math.abs(dnpv) < 1e-12) break;
+    const nr = r - npv/dnpv;
+    if (Math.abs(nr-r) < 1e-8) return nr;
+    r = nr;
   }
   return r;
 }
 
-function runFlagsLocal(a,irr,min_dscr) {
-  const flags=[];
-  if(min_dscr<a.dscr_covenant) flags.push({severity:'critical',area:'Debt Service',title:'DSCR Below Covenant',desc:`Min DSCR ${min_dscr.toFixed(2)}x below ${a.dscr_covenant}x covenant.`,action:'Resize debt or renegotiate covenant.'});
-  else if(min_dscr<1.40) flags.push({severity:'major',area:'Debt Service',title:'DSCR Headroom Thin',desc:`Min DSCR ${min_dscr.toFixed(2)}x — limited buffer.`,action:'Run P90 stress test.'});
-  if(a.soiling_loss<0.02) flags.push({severity:'major',area:'PVsyst',title:'Soiling Below Benchmark',desc:`${(a.soiling_loss*100).toFixed(1)}% soiling vs 2.0–2.5% regional benchmark.`,action:'Request soiling study.'});
-  if(a.degrad<0.003) flags.push({severity:'major',area:'PVsyst',title:'Degradation Optimistic',desc:`${(a.degrad*100).toFixed(2)}%/yr below 0.40% industry standard.`,action:'Confirm with module warranty.'});
-  if(a.itc>=0.40&&!a.safe_harbor) flags.push({severity:'critical',area:'ITC',title:'40% ITC — No Safe Harbor',desc:'Safe Harbor not confirmed.',action:'Confirm before close.'});
-  if(a.merch_price>70) flags.push({severity:'major',area:'Revenue',title:'Merchant Above Consensus',desc:`$${a.merch_price}/MWh above Aurora consensus.`,action:'Align with base case.'});
-  if(a.contingency_pct<0.05&&a.contingency_pct>0) flags.push({severity:'minor',area:'CAPEX',title:'Contingency Below 5%',desc:`${(a.contingency_pct*100).toFixed(1)}% contingency.`,action:'Increase or confirm lump-sum EPC.'});
-  if(irr&&irr<a.hurdle_rate) flags.push({severity:'critical',area:'Returns',title:'IRR Below Hurdle',desc:`${irr.toFixed(1)}% IRR below ${a.hurdle_rate}% hurdle.`,action:'Reduce bid or renegotiate.'});
+function runFlagsLocal(a, irr, min_dscr) {
+  const flags = [];
+  if (min_dscr < a.dscr_covenant)
+    flags.push({severity:'critical',area:'Debt Service',title:'DSCR Below Covenant',
+      desc:`Min DSCR ${min_dscr.toFixed(2)}x below ${a.dscr_covenant}x covenant.`,
+      action:'Resize debt or renegotiate covenant.'});
+  else if (min_dscr < 1.40)
+    flags.push({severity:'major',area:'Debt Service',title:'DSCR Headroom Thin',
+      desc:`Min DSCR ${min_dscr.toFixed(2)}x — limited buffer for underperformance.`,
+      action:'Run P90 stress test.'});
+  if (a.soiling_loss < 0.02)
+    flags.push({severity:'major',area:'PVsyst',title:'Soiling Below Benchmark',
+      desc:`${(a.soiling_loss*100).toFixed(1)}% soiling vs 2.0–2.5% regional benchmark.`,
+      action:'Request soiling study.'});
+  if (a.degrad < 0.003)
+    flags.push({severity:'major',area:'PVsyst',title:'Degradation Optimistic',
+      desc:`${(a.degrad*100).toFixed(2)}%/yr below 0.40% industry standard.`,
+      action:'Confirm with module warranty.'});
+  if (a.itc >= 0.40 && !a.safe_harbor)
+    flags.push({severity:'critical',area:'ITC',title:'40% ITC — No Safe Harbor',
+      desc:'Safe Harbor not confirmed. ITC recapture risk.',
+      action:'Confirm before close.'});
+  if (a.merch_price > 70)
+    flags.push({severity:'major',area:'Revenue',title:'Merchant Above Consensus',
+      desc:`$${a.merch_price}/MWh above Aurora consensus of $65–70/MWh.`,
+      action:'Align with base case or flag as bull.'});
+  if (a.contingency_pct > 0 && a.contingency_pct < 0.05)
+    flags.push({severity:'minor',area:'CAPEX',title:'Contingency Below 5%',
+      desc:`${(a.contingency_pct*100).toFixed(1)}% contingency below 5% minimum.`,
+      action:'Increase or confirm lump-sum EPC.'});
+  if (irr && irr < a.hurdle_rate)
+    flags.push({severity:'critical',area:'Returns',title:'IRR Below Hurdle',
+      desc:`${irr.toFixed(1)}% IRR below ${a.hurdle_rate}% hurdle rate.`,
+      action:'Reduce bid or renegotiate terms.'});
   return flags;
 }
 
-// ── RENDER MODEL RESULTS ──────────────────────────────────────────────────────
+// ── RENDER ────────────────────────────────────────────────────────────────────
 function renderModel(r) {
   if (!r) return;
   const irr  = r.irr != null ? r.irr.toFixed(1)+'%' : 'N/A';
@@ -1010,109 +1295,90 @@ function renderModel(r) {
   const pb   = r.payback ? r.payback+' yrs' : 'N/A';
   const eq   = r.equity_in ? '$'+Math.round(r.equity_in/1000).toLocaleString()+'K' : 'N/A';
 
-  // Overview metrics
-  setTxt('ov-irr', irr); setTxt('ov-npv', npv);
-  setTxt('ov-dscr', dscr); setTxt('ov-payback', pb);
-  // Model metrics
-  setTxt('m-irr', irr); setTxt('m-npv', npv);
-  setTxt('m-dscr', dscr); setTxt('m-equity', eq);
+  ['ov-irr','m-irr'].forEach(id => setTxt(id, irr));
+  ['ov-npv','m-npv'].forEach(id => setTxt(id, npv));
+  ['ov-dscr','m-dscr'].forEach(id => setTxt(id, dscr));
+  setTxt('ov-payback', pb);
+  setTxt('m-equity', eq);
 
-  // Color IRR
-  const d = DEALS[curDeal];
-  const irrEl = document.getElementById('ov-irr');
-  if (irrEl && r.irr) irrEl.className = 'metric-value ' + (r.irr >= d.a.hurdle_rate ? 'mv-green' : 'mv-red');
+  if (curDeal) {
+    const irrEl = document.getElementById('ov-irr');
+    if (irrEl && r.irr) irrEl.className = 'metric-value ' + (r.irr >= DEALS[curDeal].a.hurdle_rate ? 'mv-green' : 'mv-red');
+  }
 
-  // Build chart
   buildChart(r.years);
 
-  // Build revenue table
-  const selYrs = [0,2,4,6,9,14,19,24,34].filter(i => i < r.years.length);
-  const yrs = selYrs.map(i => r.years[i]);
+  // Revenue table
+  const selYrs = [0,2,4,6,9,14,19,24,34].filter(i=>i<r.years.length);
+  const yrs = selYrs.map(i=>r.years[i]);
   document.getElementById('rev-head').innerHTML =
     `<th>Line Item</th>${yrs.map(y=>`<th style="text-align:right">Yr ${y.year}</th>`).join('')}`;
   document.getElementById('rev-body').innerHTML = [
-    ['Net MWh', yrs.map(y => y.net_mwh.toLocaleString()), ''],
-    ['Price ($/MWh)', yrs.map(y => '$'+y.price), ''],
-    ['Revenue ($\'000)', yrs.map(y => '$'+y.revenue.toLocaleString()), 'bold'],
-    ['OPEX ($\'000)', yrs.map(y => '('+y.opex.toLocaleString()+')'), 'neg'],
-    ['EBITDA ($\'000)', yrs.map(y => '$'+y.ebitda.toLocaleString()), 'total'],
-    ['EBITDA Margin', yrs.map(y => y.ebitda_margin+'%'), ''],
-  ].map(([lbl,vals,cls]) =>
+    ['Net MWh', yrs.map(y=>y.net_mwh.toLocaleString()), ''],
+    ['Price ($/MWh)', yrs.map(y=>'$'+y.price), ''],
+    ['Revenue ($\'000)', yrs.map(y=>'$'+y.revenue.toLocaleString()), 'bold'],
+    ['OPEX ($\'000)', yrs.map(y=>'('+y.opex.toLocaleString()+')'), 'neg'],
+    ['EBITDA ($\'000)', yrs.map(y=>'$'+y.ebitda.toLocaleString()), 'total'],
+    ['EBITDA Margin', yrs.map(y=>y.ebitda_margin+'%'), ''],
+  ].map(([lbl,vals,cls])=>
     `<tr class="${cls==='total'?'tbl-total':''}"><td class="bold">${lbl}</td>${vals.map(v=>`<td class="num${cls==='neg'?' mv-red':cls==='total'?' mv-blue':''}">${v}</td>`).join('')}</tr>`
   ).join('');
 
-  // Build debt table
-  const dSelYrs = [0,4,9,14,19].filter(i => i < r.years.length);
-  const dYrs = dSelYrs.map(i => r.years[i]);
+  // Debt table
+  const dYrs = [0,4,9,14,19].filter(i=>i<r.years.length).map(i=>r.years[i]);
   document.getElementById('debt-head').innerHTML =
     `<th>Line Item</th>${dYrs.map(y=>`<th style="text-align:right">Yr ${y.year}</th>`).join('')}`;
   document.getElementById('debt-body').innerHTML = [
-    ['Beg. Balance ($\'000)', dYrs.map(y => '$'+y.beg_bal.toLocaleString()), ''],
-    ['Amortization', dYrs.map(y => y.amort>0?'('+y.amort.toLocaleString()+')':'—'), ''],
-    ['Interest Expense', dYrs.map(y => y.interest>0?'('+y.interest.toLocaleString()+')':'—'), ''],
-    ['Total Debt Service', dYrs.map(y => y.ds>0?'('+y.ds.toLocaleString()+')':'—'), ''],
-    ['EBITDA ($\'000)', dYrs.map(y => '$'+y.ebitda.toLocaleString()), ''],
-    ['CFADS ($\'000)', dYrs.map(y => '$'+y.cfads.toLocaleString()), 'sub'],
-    ['DSCR', dYrs.map(y => y.dscr<90?y.dscr.toFixed(2)+'x':'N/A'), 'total'],
-  ].map(([lbl,vals,cls]) =>
+    ['Beg. Balance', dYrs.map(y=>'$'+y.beg_bal.toLocaleString()), ''],
+    ['Amortization', dYrs.map(y=>y.amort>0?'('+y.amort.toLocaleString()+')':'—'), ''],
+    ['Interest', dYrs.map(y=>y.interest>0?'('+y.interest.toLocaleString()+')':'—'), ''],
+    ['Debt Service', dYrs.map(y=>y.ds>0?'('+y.ds.toLocaleString()+')':'—'), ''],
+    ['EBITDA', dYrs.map(y=>'$'+y.ebitda.toLocaleString()), ''],
+    ['CFADS', dYrs.map(y=>'$'+y.cfads.toLocaleString()), 'sub'],
+    ['DSCR', dYrs.map(y=>y.dscr<90?y.dscr.toFixed(2)+'x':'N/A'), 'total'],
+  ].map(([lbl,vals,cls])=>
     `<tr class="${cls==='total'?'tbl-total':''}"><td class="bold">${lbl}</td>${vals.map(v=>`<td class="num">${v}</td>`).join('')}</tr>`
   ).join('');
 
-  // Flags
-  renderFlags(r.flags || []);
-
-  // Live state for chat
+  renderFlags(r.flags||[]);
   renderLiveState(r);
 }
 
 function buildChart(years) {
   const el = document.getElementById('cf-chart');
-  if (!el || !years.length) return;
+  if (!el||!years.length) return;
   el.innerHTML = '';
-  const vals = years.map(y => y.cfads);
-  const max = Math.max(...vals, 1);
-  const colors = ['#1565C7','#1976D2','#1E88E5','#42A5F5','#64B5F6'];
-  vals.forEach((v, i) => {
+  const vals = years.map(y=>y.cfads);
+  const max = Math.max(...vals,1);
+  vals.forEach((v,i)=>{
     const bar = document.createElement('div');
     bar.className = 'bar';
-    const h = Math.max((v / max) * 140, 2);
-    bar.style.cssText = `height:${h}px;background:${colors[Math.min(Math.floor(i/7),4)]};opacity:${0.4+i/years.length*0.55}`;
+    bar.style.cssText = `height:${Math.max((v/max)*140,2)}px;background:#1565C7;opacity:${0.4+i/years.length*0.55}`;
     bar.title = `Yr ${i+1}: $${v.toLocaleString()}K CFADS`;
-    if (i % 5 === 0) {
-      const lbl = document.createElement('div');
-      lbl.className = 'bar-lbl';
-      lbl.style.cssText = `left:${(i/vals.length)*100}%`;
-      lbl.textContent = 'Y'+(i+1);
-      el.appendChild(lbl);
-    }
     el.appendChild(bar);
   });
 }
 
 function renderFlags(flags) {
-  const crit = flags.filter(f=>f.severity==='critical').length;
-  const maj  = flags.filter(f=>f.severity==='major').length;
-  const min  = flags.filter(f=>f.severity==='minor').length;
-  setTxt('flag-critical', crit);
-  setTxt('flag-major', maj);
-  setTxt('flag-minor', min);
-  const sevMap = {critical:'badge-red',major:'badge-amber',minor:'badge-blue'};
-  document.getElementById('flags-list').innerHTML = flags.length ?
-    flags.map(f => `
-      <div class="flag-item">
+  const crit=flags.filter(f=>f.severity==='critical').length;
+  const maj=flags.filter(f=>f.severity==='major').length;
+  const min=flags.filter(f=>f.severity==='minor').length;
+  setTxt('flag-critical',crit); setTxt('flag-major',maj); setTxt('flag-minor',min);
+  const sevMap={critical:'badge-red',major:'badge-amber',minor:'badge-blue'};
+  document.getElementById('flags-list').innerHTML = flags.length
+    ? flags.map(f=>`<div class="flag-item">
         <div style="padding-top:2px"><span class="badge ${sevMap[f.severity]}">${f.severity}</span></div>
         <div class="flag-body">
           <div class="flag-title">${f.area} — ${f.title}</div>
           <div class="flag-desc">${f.desc}</div>
           <div class="flag-action">→ ${f.action}</div>
-        </div>
-      </div>`).join('') :
-    '<div style="font-size:12px;color:var(--green);padding:8px 0">✓ No flags — model assumptions are within acceptable ranges.</div>';
+        </div></div>`).join('')
+    : '<div style="font-size:12px;color:var(--green);padding:8px 0">✓ No flags — assumptions within acceptable ranges.</div>';
 }
 
 function renderLiveState(r) {
-  const d = DEALS[curDeal];
-  const a = d.a;
+  if (!curDeal) return;
+  const a = DEALS[curDeal].a;
   document.getElementById('live-state').innerHTML = `
     <thead><tr><th>Assumption</th><th style="text-align:right">Value</th></tr></thead>
     <tbody>
@@ -1121,33 +1387,72 @@ function renderLiveState(r) {
       <tr><td>MW dc</td><td class="num">${a.mwdc} MWdc</td></tr>
       <tr><td>Total CapEx</td><td class="num">$${(a.capex/1000).toFixed(0)}M</td></tr>
       <tr><td>Interest Rate</td><td class="num">${(a.rate*100).toFixed(2)}%</td></tr>
-      <tr><td>ITC Rate</td><td class="num">${(a.itc*100).toFixed(0)}%</td></tr>
-      <tr><td class="bold">Levered IRR</td><td class="num bold" style="color:var(--blue)">${r.irr?r.irr.toFixed(1)+'%':'N/A'}</td></tr>
+      <tr><td class="bold">Levered IRR</td><td class="num bold mv-blue">${r.irr?r.irr.toFixed(1)+'%':'N/A'}</td></tr>
       <tr><td class="bold">Min DSCR</td><td class="num bold">${r.min_dscr?r.min_dscr.toFixed(2)+'x':'N/A'}</td></tr>
-      <tr><td class="bold">NPV @ 8%</td><td class="num bold" style="color:var(--green)">${r.npv?'$'+Math.round(r.npv/1000).toLocaleString()+'K':'N/A'}</td></tr>
+      <tr><td class="bold">NPV @ 8%</td><td class="num bold mv-green">${r.npv?'$'+Math.round(r.npv/1000).toLocaleString()+'K':'N/A'}</td></tr>
     </tbody>`;
 }
 
-// ── HELPERS ───────────────────────────────────────────────────────────────────
-function setTxt(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = val;
+// ── INVESTMENT MEMO ───────────────────────────────────────────────────────────
+function generateMemo() {
+  if (!curDeal || !modelResult) return;
+  const d = DEALS[curDeal];
+  const r = modelResult;
+  const flags = r.flags || [];
+  const crit = flags.filter(f=>f.severity==='critical').length;
+  const maj = flags.filter(f=>f.severity==='major').length;
+  const irrOk = r.irr && r.irr >= d.a.hurdle_rate;
+  const score = Math.max(0, Math.min(100, 85 - crit*15 - maj*5 + (irrOk?5:0)));
+  const verdict = score >= 75 ? 'Conditional Buy' : score >= 55 ? 'Further Diligence Required' : 'Do Not Proceed';
+  const verdictColor = score >= 75 ? 'var(--blue)' : score >= 55 ? 'var(--amber)' : 'var(--red)';
+
+  setTxt('memo-score', score);
+  setTxt('memo-verdict', verdict);
+  setTxt('memo-verdict-desc', `${d.name} — ${d.status}. Score: ${score}/100.`);
+  document.getElementById('memo-score-block').style.borderColor = verdictColor;
+  document.getElementById('memo-deal-name').textContent = `${d.name} — Deal-level memo. Click any section to edit.`;
+
+  // Financial summary
+  document.getElementById('memo-fin-summary').innerHTML = [
+    ['Asking Price / CapEx', '$'+(d.a.capex/1000).toFixed(0)+'M'],
+    ['Levered IRR (Base)', r.irr?r.irr.toFixed(1)+'%':'N/A'],
+    ['NPV @ 8%', r.npv?'$'+Math.round(r.npv/1000).toLocaleString()+'K':'N/A'],
+    ['Min DSCR', r.min_dscr?r.min_dscr.toFixed(2)+'x':'N/A'],
+    ['Payback Period', r.payback?r.payback+' years':'N/A'],
+    ['ITC Rate', (d.a.itc*100).toFixed(0)+'%'],
+    ['Hurdle Rate', d.a.hurdle_rate+'%'],
+  ].map(([l,v])=>`<div class="fin-row"><span class="fin-lbl">${l}</span><span class="fin-val ${v.includes('%')&&parseFloat(v)>=d.a.hurdle_rate?'pos':''}">${v}</span></div>`).join('');
+
+  // Risk summary
+  document.getElementById('memo-risk-summary').innerHTML = [
+    ['Critical Findings', crit, crit>0?'warn':''],
+    ['Major Findings', maj, maj>0?'warn':''],
+    ['Safe Harbor Status', d.a.safe_harbor?'Confirmed':'⚠ Not Confirmed', d.a.safe_harbor?'pos':'warn'],
+    ['ITC Recapture Risk', d.a.safe_harbor?'None':'Review', d.a.safe_harbor?'pos':'warn'],
+    ['DSCR vs Covenant', r.min_dscr>=d.a.dscr_covenant?'Pass':'⚠ Breach', r.min_dscr>=d.a.dscr_covenant?'pos':'warn'],
+  ].map(([l,v,cls])=>`<div class="fin-row"><span class="fin-lbl">${l}</span><span class="fin-val ${cls}">${v}</span></div>`).join('');
+
+  // Auto-generate text sections
+  const total = Object.values(d.capital_stack).reduce((s,[v])=>s+v,0);
+  document.getElementById('memo-exec').value =
+    `${d.name} is ${d.meta}. At the current CapEx of $${(d.a.capex/1000).toFixed(0)}M, the project generates a levered IRR of ${r.irr?r.irr.toFixed(1)+'%':'N/A'} against a ${d.a.hurdle_rate}% hurdle rate. Total capital stack of $${(total/1000).toFixed(0)}M includes ${Object.keys(d.capital_stack).join(', ')}. ${crit>0?crit+' critical engineering flag(s) require resolution before close.':maj>0?maj+' major engineering flag(s) identified for review.':'No critical engineering issues identified.'}`;
+
+  document.getElementById('memo-tech').value =
+    `Technical review based on ${d.assets.length-1} asset(s). P50 yield assumption of ${d.a.yield_kwh} kWh/kWp with ${(d.a.degrad*100).toFixed(2)}%/yr degradation and ${(d.a.avail*100).toFixed(1)}% availability factor. Soiling loss of ${(d.a.soiling_loss*100).toFixed(1)}% applied${d.a.soiling_loss<0.02?' — below regional benchmark of 2.0–2.5%, flagged for review':' — within benchmark range'}. Contingency at ${(d.a.contingency_pct*100).toFixed(1)}% of CapEx.`;
+
+  document.getElementById('memo-fin').value =
+    `Base case levered IRR of ${r.irr?r.irr.toFixed(1)+'%':'N/A'} ${irrOk?'exceeds':'falls below'} the ${d.a.hurdle_rate}% hurdle rate by ${r.irr?Math.abs(r.irr-d.a.hurdle_rate).toFixed(1)+'pp':'N/A'}. NPV at 8% discount rate: ${r.npv?'$'+Math.round(r.npv/1000).toLocaleString()+'K':'N/A'}. Minimum DSCR of ${r.min_dscr?r.min_dscr.toFixed(2)+'x':'N/A'} vs ${d.a.dscr_covenant}x covenant. ITC proceeds estimated at $${r.itc_proceeds?(r.itc_proceeds/1000).toFixed(0)+'K':'N/A'} based on ${(d.a.itc*100).toFixed(0)}% rate on $${(d.a.fmv/1000).toFixed(0)}M FMV.`;
+
+  document.getElementById('memo-rec').value =
+    score >= 75
+      ? `Recommend proceeding with ${verdict.toLowerCase()} at current pricing. ${crit>0?'Resolution of '+crit+' critical flag(s) required before signing.':maj>0?'Resolution of '+maj+' major flag(s) recommended before close.':'No blocking issues identified.'} At current assumptions, returns exceed hurdle rate with adequate DSCR headroom.`
+      : score >= 55
+      ? `Recommend further diligence before committing. Key concerns: ${flags.slice(0,2).map(f=>f.title).join(', ')}. A price adjustment or seller concession may be required to meet return threshold.`
+      : `Do not proceed at current pricing and assumptions. IRR of ${r.irr?r.irr.toFixed(1)+'%':'N/A'} does not meet the ${d.a.hurdle_rate}% hurdle rate. Significant assumption or structural changes required.`;
 }
 
-function flagChange(id) {
-  const el = document.getElementById(id);
-  if (el) el.style.borderColor = '#F59E0B';
-}
-
-// ── AUDIT LOG ─────────────────────────────────────────────────────────────────
-function addAudit(field, from, to) {
-  const now = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-  auditLog.unshift({field, from, to, time: now});
-  document.getElementById('audit-log').innerHTML = auditLog.map(e =>
-    `<div class="audit-item">
-      <span class="audit-ts">${e.time}</span>
-      <div><span class="bold">${e.field}</span>: <span class="audit-from">${e.from}</span> → <span class="audit-to">${e.to}</span></div>
-    </div>`).join('');
+function regenerateMemo() {
+  generateMemo();
 }
 
 // ── CHAT ──────────────────────────────────────────────────────────────────────
@@ -1158,78 +1463,62 @@ async function sendChat() {
   addChatMsg(txt, 'user');
   inp.value = '';
   addChatMsg('Analyzing...', 'ai', true);
-
   try {
     const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        message: txt,
-        deal: curDeal,
-        assumptions: getAssumptions(),
-        model_result: modelResult
-      })
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({message:txt, deal:curDeal, assumptions:getAssumptions(), model_result:modelResult})
     });
     const data = await res.json();
     removeLoadingMsg();
     addChatMsg(data.reply, 'ai');
-    if (data.changes && data.changes.length) {
-      data.changes.forEach(c => {
-        applyChange(c);
-        addAudit(c.field, c.from, c.to);
-      });
+    if (data.changes?.length) {
+      data.changes.forEach(c => { applyChange(c); addAuditEntry(c.field, c.from, c.to); });
       await runModel();
     }
   } catch(e) {
     removeLoadingMsg();
-    addChatMsg('I can analyze your question once the API is connected. For now, try editing assumptions directly in the Assumptions tab and clicking Recalculate.', 'ai');
+    addChatMsg('API not connected yet. Edit assumptions directly in the Assumptions tab and click Recalculate.', 'ai');
   }
 }
 
-function useSugg(el) {
-  document.getElementById('chat-in').value = el.textContent;
-  sendChat();
-}
+function useSugg(el) { document.getElementById('chat-in').value = el.textContent; sendChat(); }
 
 function addChatMsg(text, role, loading=false) {
   const msgs = document.getElementById('chat-msgs');
   const div = document.createElement('div');
-  div.className = 'msg ' + role;
+  div.className = 'msg '+role;
   if (loading) div.id = 'loading-msg';
-  div.innerHTML = `<div class="msg-av ${role}">${role==='ai'?'SL':'You'}</div><div class="msg-bubble">${loading?'<div class="loading"><div class="spinner"></div> Thinking...</div>':text}</div>`;
+  div.innerHTML = `<div class="msg-av ${role}">${role==='ai'?'SL':'You'}</div><div class="msg-bubble">${loading?'<span class="spinner"></span> Thinking...':text}</div>`;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-function removeLoadingMsg() {
-  const el = document.getElementById('loading-msg');
-  if (el) el.remove();
-}
+function removeLoadingMsg() { document.getElementById('loading-msg')?.remove(); }
 
 function applyChange(c) {
-  const map = {
-    'merch_price': 'a-merch',
-    'ppa_price': 'a-ppa',
-    'opex_base': 'a-opex',
-    'loan': 'a-loan',
-    'rate': 'a-rate',
-    'mwdc': 'a-mwdc',
-    'yield_kwh': 'a-yield',
-  };
-  const elId = map[c.field];
-  if (elId) {
-    const el = document.getElementById(elId);
-    if (el) { el.value = c.to; el.style.borderColor = '#22C55E'; }
-  }
+  const map = {merch_price:'a-merch',ppa_price:'a-ppa',opex_base:'a-opex',loan:'a-loan',rate:'a-rate',mwdc:'a-mwdc'};
+  const el = document.getElementById(map[c.field]);
+  if (el) { el.value = c.to; el.style.borderColor = '#22C55E'; }
 }
 
-// ── EXPORT ────────────────────────────────────────────────────────────────────
-function exportExcel() {
-  alert('Excel export coming soon. This will generate a formatted workbook matching your institutional model template.');
+function addAuditEntry(field, from, to) {
+  const now = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  auditLog.unshift({field,from,to,time:now});
+  const html = auditLog.map(e=>`<div class="audit-item"><span class="audit-ts">${e.time}</span><div><span class="bold">${e.field}</span>: <span class="audit-from">${e.from}</span> → <span class="audit-to">${e.to}</span></div></div>`).join('');
+  document.getElementById('audit-log').innerHTML = html;
+  document.getElementById('audit-trail').innerHTML = html;
 }
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function setTxt(id, val) { const el=document.getElementById(id); if(el) el.textContent=val; }
+function setVal(id, val) { const el=document.getElementById(id); if(el) el.value=val; }
+function flagChange(el) { if(el) el.style.borderColor='#F59E0B'; }
+function exportExcel() { alert('Excel export coming soon.'); }
+function exportPDF() { alert('PDF export coming soon.'); }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-loadDeal('yarotek');
+buildHomeDashboard();
+go('home', document.getElementById('nav-home'));
 </script>
 </body>
 </html>
