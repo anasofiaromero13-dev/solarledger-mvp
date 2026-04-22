@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SolarLedger MVP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#060D1F;--navy2:#0B1428;--navy3:#111E35;
+  --blue:#1565C7;--blue-mid:#1976D2;--blue-light:#E3F0FF;--blue-pale:#F0F7FF;
+  --teal:#00897B;--teal-bg:#E0F2F1;
+  --amber:#E65100;--amber-bg:#FFF3E0;
+  --red:#C62828;--red-bg:#FFEBEE;
+  --green:#2E7D32;--green-bg:#E8F5E9;
+  --line:#1E2D45;--line-light:#E8EFF8;
+  --text:#0D1B2E;--text2:#4A5568;--text3:#8C9AB0;
+  --surface:#F7FAFD;--white:#FFFFFF;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'DM Sans',sans-serif;
+  --r:8px;--r-lg:12px;
+}
+html,body{height:100%;font-family:var(--sans);background:var(--navy);color:var(--text)}
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:240px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;border-right:1px solid var(--line)}
+.brand{padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+.brand-logo{font-size:20px;font-weight:600;color:#fff;letter-spacing:-.02em}
+.brand-logo span{color:#4A9EF0}
+.brand-sub{font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.deal-selector{padding:10px 12px;border-bottom:1px solid var(--line)}
+.deal-selector label{font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px}
+.deal-select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);color:#fff;font-family:var(--sans);font-size:12px;padding:7px 10px;cursor:pointer;outline:none}
+.deal-select option{background:var(--navy2);color:#fff}
+.nav{padding:8px 10px;flex:1;overflow-y:auto}
+.nav-section{font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.08em;padding:10px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r);cursor:pointer;font-size:12.5px;color:rgba(255,255,255,.4);transition:all .15s;border:none;background:none;width:100%;text-align:left;margin-bottom:1px}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.7)}
+.nav-item.active{background:rgba(74,158,240,.14);color:#4A9EF0;font-weight:500}
+.nav-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;background:rgba(255,255,255,.07);color:rgba(255,255,255,.25);font-family:var(--mono)}
+.nav-item.active .nav-num{background:rgba(74,158,240,.25);color:#4A9EF0}
+.nav-item.done .nav-num{background:rgba(46,125,50,.25);color:#66BB6A}
+.sidebar-foot{padding:10px 14px;border-top:1px solid var(--line);font-size:10px;color:rgba(255,255,255,.12)}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;background:var(--surface);display:flex;flex-direction:column}
+.topbar{background:var(--white);border-bottom:1px solid var(--line-light);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;flex-shrink:0}
+.topbar-left h1{font-size:14px;font-weight:600;color:var(--text)}
+.topbar-left p{font-size:11px;color:var(--text3)}
+.topbar-right{display:flex;gap:8px;align-items:center}
+.btn{font-family:var(--sans);font-size:12px;font-weight:500;padding:6px 14px;border-radius:var(--r);cursor:pointer;border:1px solid var(--line-light);background:var(--white);color:var(--text2);transition:all .15s}
+.btn:hover{border-color:#CBD5E1;background:var(--surface)}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-primary:hover{background:#1253A4}
+.btn-sm{font-size:11px;padding:4px 10px}
+.btn-green{background:var(--green);color:#fff;border-color:var(--green)}
+.content{padding:24px;flex:1}
+.screen{display:none}
+.screen.active{display:block;animation:fadeUp .2s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--line-light);border-radius:var(--r-lg);padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,.05);margin-bottom:16px}
+.card-hd{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.sec-hd{margin-bottom:16px}
+.sec-hd h2{font-size:16px;font-weight:600;color:var(--text);letter-spacing:-.02em}
+.sec-hd p{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* METRICS */
+.metric{background:var(--white);border:1px solid var(--line-light);border-radius:var(--r);padding:14px 16px}
+.metric-label{font-size:10px;color:var(--text3);margin-bottom:5px}
+.metric-value{font-size:22px;font-weight:600;letter-spacing:-.03em;line-height:1;font-family:var(--mono)}
+.metric-sub{font-size:10px;color:var(--text3);margin-top:3px}
+.mv-blue{color:var(--blue)}
+.mv-green{color:var(--green)}
+.mv-amber{color:var(--amber)}
+.mv-red{color:var(--red)}
+
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;text-align:left;border-bottom:1px solid var(--line-light);background:var(--surface)}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--line-light);color:var(--text2)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#FAFBFF}
+.tbl td.num{font-family:var(--mono);font-size:11px;text-align:right}
+.tbl td.bold{font-weight:600;color:var(--text)}
+.tbl-total td{background:var(--blue-pale)!important;font-weight:600;border-top:2px solid var(--blue-light)!important}
+
+/* BADGES */
+.badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;display:inline-block}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.badge-amber{background:var(--amber-bg);color:var(--amber)}
+.badge-red{background:var(--red-bg);color:var(--red)}
+.badge-blue{background:var(--blue-light);color:var(--blue)}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg label{display:block;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:4px}
+.fg input,.fg select{width:100%;font-family:var(--sans);font-size:12px;padding:7px 10px;border-radius:var(--r);border:1px solid var(--line-light);background:var(--white);color:var(--text);outline:none;transition:border-color .15s}
+.fg input:focus,.fg select:focus{border-color:var(--blue)}
+.fg input.inp-blue{color:var(--blue);font-family:var(--mono);font-weight:500}
+.fg input.inp-flag{border-color:#F59E0B;background:#FFFBEB}
+.fg .unit{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* FLAGS */
+.flag-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-light)}
+.flag-item:last-child{border-bottom:none}
+.flag-body{flex:1}
+.flag-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.flag-desc{font-size:11px;color:var(--text3);line-height:1.55}
+.flag-action{font-size:10px;color:var(--teal);margin-top:4px;font-weight:500}
+
+/* CHAT */
+.chat-wrap{display:flex;flex-direction:column;height:400px;background:var(--white);border:1px solid var(--line-light);border-radius:var(--r-lg)}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.msg{display:flex;gap:8px;align-items:flex-start}
+.msg-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.msg-av.ai{background:var(--navy);color:#4A9EF0}
+.msg-av.user{background:var(--blue-light);color:var(--blue)}
+.msg-bubble{background:var(--surface);border:1px solid var(--line-light);border-radius:10px;border-top-left-radius:2px;padding:9px 12px;font-size:12px;line-height:1.55;max-width:90%}
+.msg.user{flex-direction:row-reverse}
+.msg.user .msg-bubble{background:var(--blue-pale);border-color:#C7DFF7}
+.chat-input-row{padding:10px 12px;border-top:1px solid var(--line-light);display:flex;gap:8px}
+.chat-input{flex:1;font-family:var(--sans);font-size:12px;padding:8px 12px;border-radius:var(--r);border:1px solid var(--line-light);outline:none}
+.chat-input:focus{border-color:var(--blue)}
+.suggestions{padding:8px 12px 0;display:flex;gap:6px;flex-wrap:wrap}
+.sugg{font-size:10px;padding:3px 9px;border-radius:20px;border:1px solid var(--line-light);background:var(--surface);color:var(--text3);cursor:pointer;transition:all .15s}
+.sugg:hover{background:var(--blue-pale);border-color:#93C5FD;color:var(--blue)}
+
+/* CHART */
+.chart-wrap{height:160px;display:flex;align-items:flex-end;gap:2px;padding:10px 0 20px;position:relative}
+.bar{flex:1;border-radius:2px 2px 0 0;min-width:4px;cursor:default;transition:opacity .2s}
+.bar:hover{opacity:.7}
+.bar-lbl{position:absolute;bottom:2px;font-size:8px;color:var(--text3);font-family:var(--mono)}
+
+/* AUDIT */
+.audit-item{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line-light);font-size:11px}
+.audit-item:last-child{border-bottom:none}
+.audit-ts{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:75px}
+.audit-from{color:var(--red);text-decoration:line-through;font-family:var(--mono)}
+.audit-to{color:var(--green);font-family:var(--mono);font-weight:600}
+
+/* LOADING */
+.loading{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3);padding:8px 0}
+.spinner{width:14px;height:14px;border:2px solid var(--line-light);border-top-color:var(--blue);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line-light)}
+.main::-webkit-scrollbar{width:4px}
+.main::-webkit-scrollbar-thumb{background:var(--line-light);border-radius:2px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-logo">Solar<span>Ledger</span></div>
+    <div class="brand-sub">MVP · Financial Modeling</div>
+  </div>
+  <div class="deal-selector">
+    <label>Active Deal</label>
+    <select class="deal-select" id="deal-select" onchange="loadDeal(this.value)">
+      <option value="yarotek">Yarotek Portfolio</option>
+      <option value="foley">Foley Solar (LUIS)</option>
+      <option value="bess">Project Genesis (DG BESS)</option>
+      <option value="bsu">BSU Operating Portfolio</option>
+    </select>
+  </div>
+  <nav class="nav">
+    <div class="nav-section">Workflow</div>
+    <button class="nav-item active" onclick="go('overview',this)">
+      <span class="nav-num">1</span>Deal Overview
+    </button>
+    <button class="nav-item" onclick="go('assumptions',this)">
+      <span class="nav-num">2</span>Assumptions
+    </button>
+    <button class="nav-item" onclick="go('model',this)">
+      <span class="nav-num">3</span>Financial Model
+    </button>
+    <button class="nav-item" onclick="go('engineering',this)">
+      <span class="nav-num">4</span>Engineering Flags
+    </button>
+    <button class="nav-item" onclick="go('chat',this)">
+      <span class="nav-num">5</span>Analyst Chat
+    </button>
+  </nav>
+  <div class="sidebar-foot">Talera · SolarLedger MVP · 2026</div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 id="top-title">Deal Overview</h1>
+      <p id="top-sub">Loading deal data...</p>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-sm" onclick="exportExcel()">⬇ Export Excel</button>
+      <button class="btn btn-primary btn-sm" onclick="runModel()">↻ Recalculate</button>
+    </div>
+  </div>
+  <div class="content">
+
+  <!-- SCREEN 1: OVERVIEW -->
+  <div class="screen active" id="s-overview">
+    <div class="sec-hd">
+      <h2 id="deal-name">—</h2>
+      <p id="deal-meta">—</p>
+    </div>
+    <div class="four-col" id="overview-metrics">
+      <div class="metric"><div class="metric-label">Levered IRR</div><div class="metric-value mv-blue" id="ov-irr">—</div><div class="metric-sub" id="ov-irr-sub">vs hurdle rate</div></div>
+      <div class="metric"><div class="metric-label">NPV @ 8%</div><div class="metric-value mv-green" id="ov-npv">—</div><div class="metric-sub">$'000</div></div>
+      <div class="metric"><div class="metric-label">Min DSCR</div><div class="metric-value mv-amber" id="ov-dscr">—</div><div class="metric-sub" id="ov-dscr-sub">covenant</div></div>
+      <div class="metric"><div class="metric-label">Payback</div><div class="metric-value" id="ov-payback">—</div><div class="metric-sub">years from COD</div></div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-hd">Capital Stack ($'000)</div>
+        <table class="tbl" id="capstack-tbl">
+          <thead><tr><th>Tranche</th><th style="text-align:right">$'000</th><th style="text-align:right">%</th></tr></thead>
+          <tbody id="capstack-body"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-hd">Key Deal Parameters</div>
+        <table class="tbl" id="params-tbl">
+          <tbody id="params-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd">Annual Cash Flow — 35 Years ($'000)</div>
+      <div class="chart-wrap" id="cf-chart"></div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="go('assumptions',document.querySelectorAll('.nav-item')[1])">Review Assumptions →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: ASSUMPTIONS -->
+  <div class="screen" id="s-assumptions">
+    <div class="sec-hd">
+      <h2>Assumptions</h2>
+      <p>Edit any value. Click Recalculate to update the model. Changes are logged automatically.</p>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-hd">A. Technical Parameters</div>
+        <table class="tbl">
+          <thead><tr><th>Parameter</th><th>Unit</th><th style="text-align:right">Value</th></tr></thead>
+          <tbody>
+            <tr><td>MW dc</td><td>MWdc</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-mwdc" onchange="flagChange('a-mwdc')"></td></tr>
+            <tr><td>Annual Yield (P50)</td><td>kWh/kWp</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-yield" onchange="flagChange('a-yield')"></td></tr>
+            <tr><td>Availability</td><td>%</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-avail" onchange="flagChange('a-avail')"></td></tr>
+            <tr><td>Degradation</td><td>%/yr</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-degrad" onchange="flagChange('a-degrad')"></td></tr>
+            <tr><td>Curtailment</td><td>%</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-curtail" onchange="flagChange('a-curtail')"></td></tr>
+            <tr><td>Asset Life</td><td>years</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-life" onchange="flagChange('a-life')"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-hd">B. Revenue</div>
+        <table class="tbl">
+          <thead><tr><th>Parameter</th><th>Unit</th><th style="text-align:right">Value</th></tr></thead>
+          <tbody>
+            <tr><td>PPA Price (Yr 1)</td><td>$/MWh</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-ppa" onchange="flagChange('a-ppa')"></td></tr>
+            <tr><td>PPA Escalation</td><td>%/yr</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-ppaesc" onchange="flagChange('a-ppaesc')"></td></tr>
+            <tr><td>PPA Tenor</td><td>years</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-ppaten" onchange="flagChange('a-ppaten')"></td></tr>
+            <tr><td>Merchant Price</td><td>$/MWh</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-merch" onchange="flagChange('a-merch')"></td></tr>
+            <tr><td>Merchant Escalation</td><td>%/yr</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-merchesc" onchange="flagChange('a-merchesc')"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-hd">C. CAPEX & OPEX ($'000)</div>
+        <table class="tbl">
+          <thead><tr><th>Parameter</th><th>Unit</th><th style="text-align:right">Value</th></tr></thead>
+          <tbody>
+            <tr><td>Total CapEx</td><td>$'000</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-capex" onchange="flagChange('a-capex')"></td></tr>
+            <tr><td>OPEX Base (Yr 1)</td><td>$'000</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-opex" onchange="flagChange('a-opex')"></td></tr>
+            <tr><td>OPEX Escalation</td><td>%/yr</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-opexesc" onchange="flagChange('a-opexesc')"></td></tr>
+            <tr><td>Contingency</td><td>%</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-cont" onchange="flagChange('a-cont')"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-hd">D. Debt & ITC</div>
+        <table class="tbl">
+          <thead><tr><th>Parameter</th><th>Unit</th><th style="text-align:right">Value</th></tr></thead>
+          <tbody>
+            <tr><td>Term Loan</td><td>$'000</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-loan" onchange="flagChange('a-loan')"></td></tr>
+            <tr><td>Interest Rate</td><td>%</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-rate" onchange="flagChange('a-rate')"></td></tr>
+            <tr><td>Loan Tenor</td><td>years</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-tenor" onchange="flagChange('a-tenor')"></td></tr>
+            <tr><td>ITC Rate</td><td>%</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-itc" onchange="flagChange('a-itc')"></td></tr>
+            <tr><td>FMV ($'000)</td><td>$'000</td><td><input class="fg" style="width:90px;font-family:var(--mono);font-size:11px;color:var(--blue);text-align:right;border:1px solid var(--line-light);border-radius:4px;padding:3px 6px" id="a-fmv" onchange="flagChange('a-fmv')"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card" id="audit-card">
+      <div class="card-hd">Change Log</div>
+      <div id="audit-log"></div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="go('overview',document.querySelectorAll('.nav-item')[0])">← Back</button>
+      <button class="btn btn-primary" onclick="runModel()">Recalculate Model →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: MODEL -->
+  <div class="screen" id="s-model">
+    <div class="sec-hd">
+      <h2>Financial Model — Annual Projections</h2>
+      <p>All figures in $'000. Based on current assumptions.</p>
+    </div>
+    <div class="four-col">
+      <div class="metric"><div class="metric-label">Levered IRR</div><div class="metric-value mv-blue" id="m-irr">—</div></div>
+      <div class="metric"><div class="metric-label">NPV @ 8%</div><div class="metric-value mv-green" id="m-npv">—</div></div>
+      <div class="metric"><div class="metric-label">Min DSCR</div><div class="metric-value mv-amber" id="m-dscr">—</div></div>
+      <div class="metric"><div class="metric-label">Equity In</div><div class="metric-value" id="m-equity">—</div></div>
+    </div>
+    <div class="card">
+      <div class="card-hd">Revenue & EBITDA — Selected Years</div>
+      <div style="overflow-x:auto">
+        <table class="tbl" id="rev-tbl" style="min-width:800px">
+          <thead><tr id="rev-head"></tr></thead>
+          <tbody id="rev-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd">Debt Schedule & DSCR — Selected Years</div>
+      <div style="overflow-x:auto">
+        <table class="tbl" id="debt-tbl" style="min-width:700px">
+          <thead><tr id="debt-head"></tr></thead>
+          <tbody id="debt-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="go('assumptions',document.querySelectorAll('.nav-item')[1])">← Assumptions</button>
+      <button class="btn btn-primary" onclick="go('engineering',document.querySelectorAll('.nav-item')[3])">Engineering Flags →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: ENGINEERING -->
+  <div class="screen" id="s-engineering">
+    <div class="sec-hd">
+      <h2>Engineering & Risk Flags</h2>
+      <p>Automated flags based on current assumptions and benchmarks.</p>
+    </div>
+    <div class="three-col" style="margin-bottom:16px">
+      <div class="metric"><div class="metric-label">Critical Flags</div><div class="metric-value mv-red" id="flag-critical">—</div></div>
+      <div class="metric"><div class="metric-label">Major Flags</div><div class="metric-value mv-amber" id="flag-major">—</div></div>
+      <div class="metric"><div class="metric-label">Minor Flags</div><div class="metric-value" id="flag-minor">—</div></div>
+    </div>
+    <div class="card">
+      <div class="card-hd">Active Flags</div>
+      <div id="flags-list"></div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="go('model',document.querySelectorAll('.nav-item')[2])">← Model</button>
+      <button class="btn btn-primary" onclick="go('chat',document.querySelectorAll('.nav-item')[4])">Analyst Chat →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: CHAT -->
+  <div class="screen" id="s-chat">
+    <div class="sec-hd">
+      <h2>Analyst Chat</h2>
+      <p>Ask SolarLedger to change assumptions, run scenarios, or explain any number.</p>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="chat-wrap">
+          <div class="suggestions" id="chat-suggs"></div>
+          <div class="chat-msgs" id="chat-msgs"></div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chat-in" placeholder="e.g. Change merchant price to $70/MWh..." onkeydown="if(event.key==='Enter')sendChat()">
+            <button class="btn btn-primary btn-sm" onclick="sendChat()">Send</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-hd">Live Model State</div>
+          <table class="tbl" id="live-state"></table>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="go('engineering',document.querySelectorAll('.nav-item')[3])">← Engineering</button>
+    </div>
+  </div>
+
+  </div>
+</main>
+</div>
+
+<script>
+// ── DEAL DATA ────────────────────────────────────────────────────────────────
+const DEALS = {
+  yarotek: {
+    name: 'Yarotek Portfolio',
+    meta: 'Utility-Scale Solar · 253 MWdc · Duke Energy Carolinas · NC',
+    type: 'solar', status: 'Late-Stage Development',
+    capital_stack: {
+      'TEBL / TRABL': [123980, null],
+      'Back Leverage': [144700, null],
+      'Preferred Equity': [99754, null],
+      'Cash Equity': [22388, null],
+    },
+    params: {
+      'Asset Type': 'Utility-Scale Solar',
+      'Grid Operator': 'Duke Energy Carolinas',
+      'Location': 'Hoke & Robeson Co., NC',
+      'COD Target': 'Q1 2030',
+      'ITC Rate': '40%',
+      'Safe Harbor': 'Confirmed',
+      'Hurdle Rate': '10.0%',
+    },
+    a: {
+      mwdc:82, yield_kwh:1990, avail:0.985, degrad:0.004,
+      curtail:0.02, life:35,
+      ppa_price:59, ppa_esc:0.0, ppa_tenor:5,
+      merch_price:65, merch_esc:0.015,
+      capex:368432, opex_base:5800, opex_esc:0.02,
+      loan:144700, rate:0.085, tenor:20,
+      itc:0.40, fmv:440000, discount:0.08,
+      soiling_loss:0.015, contingency_pct:0.035,
+      dscr_covenant:1.25, hurdle_rate:10.0, safe_harbor:true,
+    },
+    suggestions: [
+      'Change merchant price to $70/MWh',
+      'What happens if degradation is 0.5%?',
+      'Increase OPEX by 15%',
+      'Run bear case: merchant price -20%',
+    ]
+  },
+  foley: {
+    name: 'Foley Solar (LUIS)',
+    meta: 'Utility-Scale Solar · 82 MWdc · PJM · Mid-Atlantic',
+    type: 'solar', status: 'Development',
+    capital_stack: {
+      'Term Loan': [35000, null],
+      'Tax Equity': [42000, null],
+      'Sponsor Equity': [21000, null],
+    },
+    params: {
+      'Asset Type': 'Utility-Scale Solar',
+      'Grid Operator': 'PJM',
+      'Location': 'Mid-Atlantic',
+      'COD Target': 'Q2 2027',
+      'ITC Rate': '40%',
+      'TE Structure': 'Partnership Flip',
+      'Hurdle Rate': '10.0%',
+    },
+    a: {
+      mwdc:82, yield_kwh:1650, avail:0.985, degrad:0.004,
+      curtail:0.02, life:35,
+      ppa_price:55, ppa_esc:0.01, ppa_tenor:12,
+      merch_price:60, merch_esc:0.015,
+      capex:98000, opex_base:1650, opex_esc:0.02,
+      loan:35000, rate:0.082, tenor:18,
+      itc:0.40, fmv:125000, discount:0.08,
+      soiling_loss:0.02, contingency_pct:0.05,
+      dscr_covenant:1.25, hurdle_rate:10.0, safe_harbor:true,
+    },
+    suggestions: [
+      'Change PPA price to $58/MWh',
+      'What if loan tenor is 20 years?',
+      'Increase contingency to 7.5%',
+      'What is the IRR sensitivity to yield?',
+    ]
+  },
+  bess: {
+    name: 'Project Genesis (DG BESS)',
+    meta: 'Battery Storage · 5 MW / 20 MWh · NY ISO · 4 Sites',
+    type: 'bess', status: 'Mid-Stage Development',
+    capital_stack: {
+      'TEBL / TRABL': [3524, null],
+      'Back Leverage': [4470, null],
+      'Preferred Equity': [1885, null],
+      'Cash Equity': [1743, null],
+    },
+    params: {
+      'Asset Type': 'Battery Storage (BESS)',
+      'Grid Operator': 'NY ISO',
+      'Location': 'New York — 4 Sites',
+      'Duration': '4 hours',
+      'COD Target': 'Nov 2028',
+      'ITC Rate': '40%',
+      'IA Status': '⚠ Pending',
+    },
+    a: {
+      mwdc:5, yield_kwh:1460, avail:0.97, degrad:0.025,
+      curtail:0.0, life:20,
+      ppa_price:85, ppa_esc:0.02, ppa_tenor:7,
+      merch_price:90, merch_esc:0.02,
+      capex:11188, opex_base:380, opex_esc:0.02,
+      loan:4470, rate:0.105, tenor:7,
+      itc:0.40, fmv:14000, discount:0.08,
+      soiling_loss:0.0, contingency_pct:0.05,
+      dscr_covenant:1.25, hurdle_rate:10.0, safe_harbor:true,
+    },
+    suggestions: [
+      'What if interest rate drops to 8.5%?',
+      'Change revenue to $95/MWh',
+      'What is DSCR if OPEX increases 20%?',
+      'Run downside: revenue -15%',
+    ]
+  },
+  bsu: {
+    name: 'BSU Operating Portfolio',
+    meta: 'C&I Solar · ~16.6 MWdc · CAISO · 20+ Sites · California',
+    type: 'solar', status: 'Operating',
+    capital_stack: {
+      'Term Loan': [18000, null],
+      'Tax Equity': [14000, null],
+      'Sponsor Equity': [13000, null],
+    },
+    params: {
+      'Asset Type': 'C&I Solar Portfolio',
+      'Grid Operator': 'CAISO',
+      'Location': 'California — 20+ sites',
+      'Status': 'Operating',
+      'Avg Availability': '98.7%',
+      'P50 Performance': '+2.1% YTD',
+      'ITC Rate': '30%',
+    },
+    a: {
+      mwdc:16.6, yield_kwh:1850, avail:0.987, degrad:0.005,
+      curtail:0.005, life:35,
+      ppa_price:72, ppa_esc:0.02, ppa_tenor:20,
+      merch_price:75, merch_esc:0.015,
+      capex:45000, opex_base:820, opex_esc:0.025,
+      loan:18000, rate:0.075, tenor:15,
+      itc:0.30, fmv:58000, discount:0.08,
+      soiling_loss:0.03, contingency_pct:0.0,
+      dscr_covenant:1.20, hurdle_rate:9.0, safe_harbor:true,
+    },
+    suggestions: [
+      'What is blended IRR across all sites?',
+      'Model 5% soiling increase in Year 3',
+      'What if 3 sites underperform P50 by 8%?',
+      'Refinance scenario at SOFR+1.75%',
+    ]
+  }
+};
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let curDeal = 'yarotek';
+let modelResult = null;
+let auditLog = [];
+
+// ── NAVIGATION ───────────────────────────────────────────────────────────────
+const SCREENS = ['overview','assumptions','model','engineering','chat'];
+const TITLES = [
+  ['Deal Overview','Summary, capital stack, and cash flow chart'],
+  ['Assumptions','Edit any assumption — changes logged automatically'],
+  ['Financial Model','35-year annual projections'],
+  ['Engineering & Risk Flags','Automated flags based on benchmarks'],
+  ['Analyst Chat','Change assumptions via natural language'],
+];
+
+function go(id, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const idx = SCREENS.indexOf(id);
+  document.getElementById('top-title').textContent = TITLES[idx][0];
+  document.getElementById('top-sub').textContent = TITLES[idx][1];
+}
+
+// ── LOAD DEAL ────────────────────────────────────────────────────────────────
+function loadDeal(id) {
+  curDeal = id;
+  const d = DEALS[id];
+  document.getElementById('deal-name').textContent = d.name;
+  document.getElementById('deal-meta').textContent = d.meta;
+
+  // Capital stack
+  const total = Object.values(d.capital_stack).reduce((s,[v]) => s+v, 0);
+  document.getElementById('capstack-body').innerHTML =
+    Object.entries(d.capital_stack).map(([k,[v]]) =>
+      `<tr><td>${k}</td><td class="num">$${v.toLocaleString()}</td><td class="num">${(v/total*100).toFixed(1)}%</td></tr>`
+    ).join('') +
+    `<tr class="tbl-total"><td class="bold">Total</td><td class="num bold">$${total.toLocaleString()}</td><td class="num bold">100%</td></tr>`;
+
+  // Params
+  document.getElementById('params-body').innerHTML =
+    Object.entries(d.params).map(([k,v]) =>
+      `<tr><td class="bold">${k}</td><td>${v}</td></tr>`
+    ).join('');
+
+  // Assumptions inputs
+  const a = d.a;
+  setVal('a-mwdc', a.mwdc);
+  setVal('a-yield', a.yield_kwh);
+  setVal('a-avail', (a.avail*100).toFixed(1)+'%');
+  setVal('a-degrad', (a.degrad*100).toFixed(2)+'%');
+  setVal('a-curtail', (a.curtail*100).toFixed(1)+'%');
+  setVal('a-life', a.life);
+  setVal('a-ppa', a.ppa_price);
+  setVal('a-ppaesc', (a.ppa_esc*100).toFixed(1)+'%');
+  setVal('a-ppaten', a.ppa_tenor);
+  setVal('a-merch', a.merch_price);
+  setVal('a-merchesc', (a.merch_esc*100).toFixed(1)+'%');
+  setVal('a-capex', a.capex.toLocaleString());
+  setVal('a-opex', a.opex_base.toLocaleString());
+  setVal('a-opexesc', (a.opex_esc*100).toFixed(1)+'%');
+  setVal('a-cont', (a.contingency_pct*100).toFixed(1)+'%');
+  setVal('a-loan', a.loan.toLocaleString());
+  setVal('a-rate', (a.rate*100).toFixed(2)+'%');
+  setVal('a-tenor', a.tenor);
+  setVal('a-itc', (a.itc*100).toFixed(0)+'%');
+  setVal('a-fmv', a.fmv.toLocaleString());
+
+  // Chat suggestions
+  document.getElementById('chat-suggs').innerHTML =
+    d.suggestions.map(s => `<div class="sugg" onclick="useSugg(this)">${s}</div>`).join('');
+
+  // Init chat
+  document.getElementById('chat-msgs').innerHTML = `
+    <div class="msg ai">
+      <div class="msg-av ai">SL</div>
+      <div class="msg-bubble">Model loaded: <strong>${d.name}</strong> (${d.meta}). Ready to recalculate. What would you like to adjust?</div>
+    </div>`;
+
+  auditLog = [];
+  document.getElementById('audit-log').innerHTML = '<div style="font-size:11px;color:var(--text3);padding:4px 0">No changes yet.</div>';
+
+  runModel();
+}
+
+function setVal(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.value = val;
+}
+
+// ── GET CURRENT ASSUMPTIONS FROM INPUTS ──────────────────────────────────────
+function getAssumptions() {
+  const d = DEALS[curDeal];
+  const a = {...d.a};
+  const parse = (id, mult=1) => {
+    const v = document.getElementById(id)?.value?.replace(/[%,$,]/g,'').trim();
+    return v ? parseFloat(v) * mult : null;
+  };
+  a.mwdc        = parse('a-mwdc') ?? a.mwdc;
+  a.yield_kwh   = parse('a-yield') ?? a.yield_kwh;
+  a.avail       = (parse('a-avail') ?? a.avail*100) / 100;
+  a.degrad      = (parse('a-degrad') ?? a.degrad*100) / 100;
+  a.curtail     = (parse('a-curtail') ?? a.curtail*100) / 100;
+  a.life        = parse('a-life') ?? a.life;
+  a.ppa_price   = parse('a-ppa') ?? a.ppa_price;
+  a.ppa_esc     = (parse('a-ppaesc') ?? a.ppa_esc*100) / 100;
+  a.ppa_tenor   = parse('a-ppaten') ?? a.ppa_tenor;
+  a.merch_price = parse('a-merch') ?? a.merch_price;
+  a.merch_esc   = (parse('a-merchesc') ?? a.merch_esc*100) / 100;
+  a.capex       = parse('a-capex') ?? a.capex;
+  a.opex_base   = parse('a-opex') ?? a.opex_base;
+  a.opex_esc    = (parse('a-opexesc') ?? a.opex_esc*100) / 100;
+  a.contingency_pct = (parse('a-cont') ?? a.contingency_pct*100) / 100;
+  a.loan        = parse('a-loan') ?? a.loan;
+  a.rate        = (parse('a-rate') ?? a.rate*100) / 100;
+  a.tenor       = parse('a-tenor') ?? a.tenor;
+  a.itc         = (parse('a-itc') ?? a.itc*100) / 100;
+  a.fmv         = parse('a-fmv') ?? a.fmv;
+  return a;
+}
+
+// ── RUN MODEL ────────────────────────────────────────────────────────────────
+async function runModel() {
+  const a = getAssumptions();
+  // Show loading
+  ['ov-irr','ov-npv','ov-dscr','ov-payback','m-irr','m-npv','m-dscr','m-equity'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '<div class="spinner" style="display:inline-block"></div>';
+  });
+
+  try {
+    const res = await fetch('/api/model', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(a)
+    });
+    modelResult = await res.json();
+    renderModel(modelResult);
+  } catch(e) {
+    // Fallback: run model client-side if API not available
+    modelResult = runModelLocal(a);
+    renderModel(modelResult);
+  }
+}
+
+// ── CLIENT-SIDE FALLBACK MODEL ────────────────────────────────────────────────
+function runModelLocal(a) {
+  const life=a.life, cfs=[-Math.max(a.capex-a.loan-a.fmv*a.itc,1000)];
+  const years=[];
+  for(let i=0;i<life;i++){
+    const yr=i+1;
+    const net=a.mwdc*a.yield_kwh*a.avail*Math.pow(1-a.degrad,i)*(1-a.curtail);
+    const price=yr<=a.ppa_tenor ? a.ppa_price*Math.pow(1+a.ppa_esc,i) : a.merch_price*Math.pow(1+a.merch_esc,i-a.ppa_tenor);
+    const rev=net*price/1000;
+    const opex=a.opex_base*Math.pow(1+a.opex_esc,i);
+    const ebitda=rev-opex;
+    const beg=Math.max(a.loan-(a.loan/a.tenor)*i,0);
+    const amort=yr<=a.tenor?a.loan/a.tenor:0;
+    const interest=beg*a.rate;
+    const ds=yr<=a.tenor?amort+interest:0;
+    const dscr=ds>0?ebitda/ds:99;
+    const cfads=Math.max(ebitda-ds,0);
+    years.push({year:yr,net_mwh:Math.round(net),price:Math.round(price*100)/100,revenue:Math.round(rev),opex:Math.round(opex),ebitda:Math.round(ebitda),ebitda_margin:rev>0?Math.round(ebitda/rev*1000)/10:0,beg_bal:Math.round(beg),amort:Math.round(amort),interest:Math.round(interest),ds:Math.round(ds),dscr:Math.round(dscr*100)/100,cfads:Math.round(cfads)});
+    cfs.push(cfads);
+  }
+  const irr=calcIRR(cfs);
+  const equity_in=Math.abs(cfs[0]);
+  const npv=cfs.slice(1).reduce((s,c,i)=>s+c/Math.pow(1+a.discount,i+1),0)-equity_in;
+  const min_dscr=Math.min(...years.filter(y=>y.ds>0).map(y=>y.dscr));
+  const payback=years.find(y=>cfs.slice(1,y.year+1).reduce((s,c)=>s+c,0)>equity_in)?.year;
+  const flags=runFlagsLocal(a,irr,min_dscr);
+  return {irr:irr?Math.round(irr*10000)/100:null,npv:Math.round(npv),min_dscr:Math.round(min_dscr*100)/100,payback,equity_in:Math.round(equity_in),itc_proceeds:Math.round(a.fmv*a.itc),years,flags};
+}
+
+function calcIRR(cfs) {
+  let r=0.1;
+  for(let i=0;i<100;i++){
+    const npv=cfs.reduce((s,c,t)=>s+c/Math.pow(1+r,t),0);
+    const dnpv=cfs.reduce((s,c,t)=>s-t*c/Math.pow(1+r,t+1),0);
+    const nr=r-npv/dnpv;
+    if(Math.abs(nr-r)<1e-8){return nr;}
+    r=nr;
+  }
+  return r;
+}
+
+function runFlagsLocal(a,irr,min_dscr) {
+  const flags=[];
+  if(min_dscr<a.dscr_covenant) flags.push({severity:'critical',area:'Debt Service',title:'DSCR Below Covenant',desc:`Min DSCR ${min_dscr.toFixed(2)}x below ${a.dscr_covenant}x covenant.`,action:'Resize debt or renegotiate covenant.'});
+  else if(min_dscr<1.40) flags.push({severity:'major',area:'Debt Service',title:'DSCR Headroom Thin',desc:`Min DSCR ${min_dscr.toFixed(2)}x — limited buffer.`,action:'Run P90 stress test.'});
+  if(a.soiling_loss<0.02) flags.push({severity:'major',area:'PVsyst',title:'Soiling Below Benchmark',desc:`${(a.soiling_loss*100).toFixed(1)}% soiling vs 2.0–2.5% regional benchmark.`,action:'Request soiling study.'});
+  if(a.degrad<0.003) flags.push({severity:'major',area:'PVsyst',title:'Degradation Optimistic',desc:`${(a.degrad*100).toFixed(2)}%/yr below 0.40% industry standard.`,action:'Confirm with module warranty.'});
+  if(a.itc>=0.40&&!a.safe_harbor) flags.push({severity:'critical',area:'ITC',title:'40% ITC — No Safe Harbor',desc:'Safe Harbor not confirmed.',action:'Confirm before close.'});
+  if(a.merch_price>70) flags.push({severity:'major',area:'Revenue',title:'Merchant Above Consensus',desc:`$${a.merch_price}/MWh above Aurora consensus.`,action:'Align with base case.'});
+  if(a.contingency_pct<0.05&&a.contingency_pct>0) flags.push({severity:'minor',area:'CAPEX',title:'Contingency Below 5%',desc:`${(a.contingency_pct*100).toFixed(1)}% contingency.`,action:'Increase or confirm lump-sum EPC.'});
+  if(irr&&irr<a.hurdle_rate) flags.push({severity:'critical',area:'Returns',title:'IRR Below Hurdle',desc:`${irr.toFixed(1)}% IRR below ${a.hurdle_rate}% hurdle.`,action:'Reduce bid or renegotiate.'});
+  return flags;
+}
+
+// ── RENDER MODEL RESULTS ──────────────────────────────────────────────────────
+function renderModel(r) {
+  if (!r) return;
+  const irr  = r.irr != null ? r.irr.toFixed(1)+'%' : 'N/A';
+  const npv  = r.npv != null ? '$'+Math.round(r.npv/1000).toLocaleString()+'K' : 'N/A';
+  const dscr = r.min_dscr != null ? r.min_dscr.toFixed(2)+'x' : 'N/A';
+  const pb   = r.payback ? r.payback+' yrs' : 'N/A';
+  const eq   = r.equity_in ? '$'+Math.round(r.equity_in/1000).toLocaleString()+'K' : 'N/A';
+
+  // Overview metrics
+  setTxt('ov-irr', irr); setTxt('ov-npv', npv);
+  setTxt('ov-dscr', dscr); setTxt('ov-payback', pb);
+  // Model metrics
+  setTxt('m-irr', irr); setTxt('m-npv', npv);
+  setTxt('m-dscr', dscr); setTxt('m-equity', eq);
+
+  // Color IRR
+  const d = DEALS[curDeal];
+  const irrEl = document.getElementById('ov-irr');
+  if (irrEl && r.irr) irrEl.className = 'metric-value ' + (r.irr >= d.a.hurdle_rate ? 'mv-green' : 'mv-red');
+
+  // Build chart
+  buildChart(r.years);
+
+  // Build revenue table
+  const selYrs = [0,2,4,6,9,14,19,24,34].filter(i => i < r.years.length);
+  const yrs = selYrs.map(i => r.years[i]);
+  document.getElementById('rev-head').innerHTML =
+    `<th>Line Item</th>${yrs.map(y=>`<th style="text-align:right">Yr ${y.year}</th>`).join('')}`;
+  document.getElementById('rev-body').innerHTML = [
+    ['Net MWh', yrs.map(y => y.net_mwh.toLocaleString()), ''],
+    ['Price ($/MWh)', yrs.map(y => '$'+y.price), ''],
+    ['Revenue ($\'000)', yrs.map(y => '$'+y.revenue.toLocaleString()), 'bold'],
+    ['OPEX ($\'000)', yrs.map(y => '('+y.opex.toLocaleString()+')'), 'neg'],
+    ['EBITDA ($\'000)', yrs.map(y => '$'+y.ebitda.toLocaleString()), 'total'],
+    ['EBITDA Margin', yrs.map(y => y.ebitda_margin+'%'), ''],
+  ].map(([lbl,vals,cls]) =>
+    `<tr class="${cls==='total'?'tbl-total':''}"><td class="bold">${lbl}</td>${vals.map(v=>`<td class="num${cls==='neg'?' mv-red':cls==='total'?' mv-blue':''}">${v}</td>`).join('')}</tr>`
+  ).join('');
+
+  // Build debt table
+  const dSelYrs = [0,4,9,14,19].filter(i => i < r.years.length);
+  const dYrs = dSelYrs.map(i => r.years[i]);
+  document.getElementById('debt-head').innerHTML =
+    `<th>Line Item</th>${dYrs.map(y=>`<th style="text-align:right">Yr ${y.year}</th>`).join('')}`;
+  document.getElementById('debt-body').innerHTML = [
+    ['Beg. Balance ($\'000)', dYrs.map(y => '$'+y.beg_bal.toLocaleString()), ''],
+    ['Amortization', dYrs.map(y => y.amort>0?'('+y.amort.toLocaleString()+')':'—'), ''],
+    ['Interest Expense', dYrs.map(y => y.interest>0?'('+y.interest.toLocaleString()+')':'—'), ''],
+    ['Total Debt Service', dYrs.map(y => y.ds>0?'('+y.ds.toLocaleString()+')':'—'), ''],
+    ['EBITDA ($\'000)', dYrs.map(y => '$'+y.ebitda.toLocaleString()), ''],
+    ['CFADS ($\'000)', dYrs.map(y => '$'+y.cfads.toLocaleString()), 'sub'],
+    ['DSCR', dYrs.map(y => y.dscr<90?y.dscr.toFixed(2)+'x':'N/A'), 'total'],
+  ].map(([lbl,vals,cls]) =>
+    `<tr class="${cls==='total'?'tbl-total':''}"><td class="bold">${lbl}</td>${vals.map(v=>`<td class="num">${v}</td>`).join('')}</tr>`
+  ).join('');
+
+  // Flags
+  renderFlags(r.flags || []);
+
+  // Live state for chat
+  renderLiveState(r);
+}
+
+function buildChart(years) {
+  const el = document.getElementById('cf-chart');
+  if (!el || !years.length) return;
+  el.innerHTML = '';
+  const vals = years.map(y => y.cfads);
+  const max = Math.max(...vals, 1);
+  const colors = ['#1565C7','#1976D2','#1E88E5','#42A5F5','#64B5F6'];
+  vals.forEach((v, i) => {
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    const h = Math.max((v / max) * 140, 2);
+    bar.style.cssText = `height:${h}px;background:${colors[Math.min(Math.floor(i/7),4)]};opacity:${0.4+i/years.length*0.55}`;
+    bar.title = `Yr ${i+1}: $${v.toLocaleString()}K CFADS`;
+    if (i % 5 === 0) {
+      const lbl = document.createElement('div');
+      lbl.className = 'bar-lbl';
+      lbl.style.cssText = `left:${(i/vals.length)*100}%`;
+      lbl.textContent = 'Y'+(i+1);
+      el.appendChild(lbl);
+    }
+    el.appendChild(bar);
+  });
+}
+
+function renderFlags(flags) {
+  const crit = flags.filter(f=>f.severity==='critical').length;
+  const maj  = flags.filter(f=>f.severity==='major').length;
+  const min  = flags.filter(f=>f.severity==='minor').length;
+  setTxt('flag-critical', crit);
+  setTxt('flag-major', maj);
+  setTxt('flag-minor', min);
+  const sevMap = {critical:'badge-red',major:'badge-amber',minor:'badge-blue'};
+  document.getElementById('flags-list').innerHTML = flags.length ?
+    flags.map(f => `
+      <div class="flag-item">
+        <div style="padding-top:2px"><span class="badge ${sevMap[f.severity]}">${f.severity}</span></div>
+        <div class="flag-body">
+          <div class="flag-title">${f.area} — ${f.title}</div>
+          <div class="flag-desc">${f.desc}</div>
+          <div class="flag-action">→ ${f.action}</div>
+        </div>
+      </div>`).join('') :
+    '<div style="font-size:12px;color:var(--green);padding:8px 0">✓ No flags — model assumptions are within acceptable ranges.</div>';
+}
+
+function renderLiveState(r) {
+  const d = DEALS[curDeal];
+  const a = d.a;
+  document.getElementById('live-state').innerHTML = `
+    <thead><tr><th>Assumption</th><th style="text-align:right">Value</th></tr></thead>
+    <tbody>
+      <tr><td>PPA Price</td><td class="num">$${a.ppa_price}/MWh</td></tr>
+      <tr><td>Merchant Price</td><td class="num">$${a.merch_price}/MWh</td></tr>
+      <tr><td>MW dc</td><td class="num">${a.mwdc} MWdc</td></tr>
+      <tr><td>Total CapEx</td><td class="num">$${(a.capex/1000).toFixed(0)}M</td></tr>
+      <tr><td>Interest Rate</td><td class="num">${(a.rate*100).toFixed(2)}%</td></tr>
+      <tr><td>ITC Rate</td><td class="num">${(a.itc*100).toFixed(0)}%</td></tr>
+      <tr><td class="bold">Levered IRR</td><td class="num bold" style="color:var(--blue)">${r.irr?r.irr.toFixed(1)+'%':'N/A'}</td></tr>
+      <tr><td class="bold">Min DSCR</td><td class="num bold">${r.min_dscr?r.min_dscr.toFixed(2)+'x':'N/A'}</td></tr>
+      <tr><td class="bold">NPV @ 8%</td><td class="num bold" style="color:var(--green)">${r.npv?'$'+Math.round(r.npv/1000).toLocaleString()+'K':'N/A'}</td></tr>
+    </tbody>`;
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function setTxt(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function flagChange(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.borderColor = '#F59E0B';
+}
+
+// ── AUDIT LOG ─────────────────────────────────────────────────────────────────
+function addAudit(field, from, to) {
+  const now = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  auditLog.unshift({field, from, to, time: now});
+  document.getElementById('audit-log').innerHTML = auditLog.map(e =>
+    `<div class="audit-item">
+      <span class="audit-ts">${e.time}</span>
+      <div><span class="bold">${e.field}</span>: <span class="audit-from">${e.from}</span> → <span class="audit-to">${e.to}</span></div>
+    </div>`).join('');
+}
+
+// ── CHAT ──────────────────────────────────────────────────────────────────────
+async function sendChat() {
+  const inp = document.getElementById('chat-in');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  addChatMsg(txt, 'user');
+  inp.value = '';
+  addChatMsg('Analyzing...', 'ai', true);
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        message: txt,
+        deal: curDeal,
+        assumptions: getAssumptions(),
+        model_result: modelResult
+      })
+    });
+    const data = await res.json();
+    removeLoadingMsg();
+    addChatMsg(data.reply, 'ai');
+    if (data.changes && data.changes.length) {
+      data.changes.forEach(c => {
+        applyChange(c);
+        addAudit(c.field, c.from, c.to);
+      });
+      await runModel();
+    }
+  } catch(e) {
+    removeLoadingMsg();
+    addChatMsg('I can analyze your question once the API is connected. For now, try editing assumptions directly in the Assumptions tab and clicking Recalculate.', 'ai');
+  }
+}
+
+function useSugg(el) {
+  document.getElementById('chat-in').value = el.textContent;
+  sendChat();
+}
+
+function addChatMsg(text, role, loading=false) {
+  const msgs = document.getElementById('chat-msgs');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  if (loading) div.id = 'loading-msg';
+  div.innerHTML = `<div class="msg-av ${role}">${role==='ai'?'SL':'You'}</div><div class="msg-bubble">${loading?'<div class="loading"><div class="spinner"></div> Thinking...</div>':text}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeLoadingMsg() {
+  const el = document.getElementById('loading-msg');
+  if (el) el.remove();
+}
+
+function applyChange(c) {
+  const map = {
+    'merch_price': 'a-merch',
+    'ppa_price': 'a-ppa',
+    'opex_base': 'a-opex',
+    'loan': 'a-loan',
+    'rate': 'a-rate',
+    'mwdc': 'a-mwdc',
+    'yield_kwh': 'a-yield',
+  };
+  const elId = map[c.field];
+  if (elId) {
+    const el = document.getElementById(elId);
+    if (el) { el.value = c.to; el.style.borderColor = '#22C55E'; }
+  }
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────────────────
+function exportExcel() {
+  alert('Excel export coming soon. This will generate a formatted workbook matching your institutional model template.');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+loadDeal('yarotek');
+</script>
+</body>
+</html>
