@@ -707,31 +707,62 @@ async function runModel() {
 
 // ── CLIENT-SIDE FALLBACK MODEL ────────────────────────────────────────────────
 function runModelLocal(a) {
-  const life=a.life, itc_proc=a.fmv*a.itc, pref_eq=a.capex*0.255, equity_in=Math.max(a.capex-a.loan-itc_proc-pref_eq, a.capex*0.057), cfs=[-equity_in];
-  const years=[];
-  for(let i=0;i<life;i++){
-    const yr=i+1;
-    const net=a.mwdc*a.yield_kwh*a.avail*Math.pow(1-a.degrad,i)*(1-a.curtail);
-    const price=yr<=a.ppa_tenor ? a.ppa_price*Math.pow(1+a.ppa_esc,i) : a.merch_price*Math.pow(1+a.merch_esc,i-a.ppa_tenor);
-    const rev=net*price/1000;
-    const opex=a.opex_base*Math.pow(1+a.opex_esc,i);
-    const ebitda=rev-opex;
-    const beg=Math.max(a.loan-(a.loan/a.tenor)*i,0);
-    const amort=yr<=a.tenor?a.loan/a.tenor:0;
-    const interest=beg*a.rate;
-    const ds=yr<=a.tenor?amort+interest:0;
-    const dscr=ds>0?ebitda/ds:99;
-    const cfads=Math.max(ebitda-ds,0);
-    years.push({year:yr,net_mwh:Math.round(net),price:Math.round(price*100)/100,revenue:Math.round(rev),opex:Math.round(opex),ebitda:Math.round(ebitda),ebitda_margin:rev>0?Math.round(ebitda/rev*1000)/10:0,beg_bal:Math.round(beg),amort:Math.round(amort),interest:Math.round(interest),ds:Math.round(ds),dscr:Math.round(dscr*100)/100,cfads:Math.round(cfads)});
+  const life = a.life;
+  const itc_proc = a.fmv * a.itc;
+  const pref_eq = a.capex * 0.255;
+  const eq_in = Math.max(a.capex - a.loan - itc_proc - pref_eq, a.capex * 0.057);
+  const cfs = [-eq_in];
+  const years = [];
+
+  for(let i=0; i<life; i++){
+    const yr = i+1;
+    const net = a.mwdc * a.yield_kwh * a.avail * Math.pow(1-a.degrad,i) * (1-a.curtail);
+    const price = yr<=a.ppa_tenor
+      ? a.ppa_price * Math.pow(1+a.ppa_esc,i)
+      : a.merch_price * Math.pow(1+a.merch_esc, i-a.ppa_tenor);
+    const rev = net * price / 1000;
+    const opex = a.opex_base * Math.pow(1+a.opex_esc,i);
+    const ebitda = rev - opex;
+    const beg = Math.max(a.loan - (a.loan/a.tenor)*i, 0);
+    const amort = yr<=a.tenor ? a.loan/a.tenor : 0;
+    const interest = beg * a.rate;
+    const ds = yr<=a.tenor ? amort+interest : 0;
+    const dscr = ds>0 ? ebitda/ds : 99;
+    const cfads = Math.max(ebitda-ds, 0);
+    years.push({
+      year:yr,
+      net_mwh:Math.round(net),
+      price:Math.round(price*100)/100,
+      revenue:Math.round(rev),
+      opex:Math.round(opex),
+      ebitda:Math.round(ebitda),
+      ebitda_margin:rev>0 ? Math.round(ebitda/rev*1000)/10 : 0,
+      beg_bal:Math.round(beg),
+      amort:Math.round(amort),
+      interest:Math.round(interest),
+      ds:Math.round(ds),
+      dscr:Math.round(dscr*100)/100,
+      cfads:Math.round(cfads)
+    });
     cfs.push(cfads);
   }
-  const irr=calcIRR(cfs);
-  const eq_in=Math.abs(cfs[0]);
-  const npv=cfs.slice(1).reduce((s,c,i)=>s+c/Math.pow(1+a.discount,i+1),0)-eq_in;
-  const min_dscr=Math.min(...years.filter(y=>y.ds>0).map(y=>y.dscr));
-  const payback=years.find(y=>cfs.slice(1,y.year+1).reduce((s,c)=>s+c,0)>eq_inn)?.year;
-  const flags=runFlagsLocal(a,irr,min_dscr);
-  return {irr:irr?Math.round(irr*10000)/100:null,npv:Math.round(npv),min_dscr:Math.round(min_dscr*100)/100,payback,equity_in:Math.round(equity_in),itc_proceeds:Math.round(a.fmv*a.itc),years,flags};
+
+  const irr = calcIRR(cfs);
+  const npv = cfs.slice(1).reduce((s,c,i) => s + c/Math.pow(1+a.discount,i+1), 0) - eq_in;
+  const min_dscr = Math.min(...years.filter(y=>y.ds>0).map(y=>y.dscr));
+  const payback = years.find(y => cfs.slice(1,y.year+1).reduce((s,c)=>s+c,0) > eq_in)?.year;
+  const flags = runFlagsLocal(a, irr, min_dscr);
+
+  return {
+    irr: irr ? Math.round(irr*10000)/100 : null,
+    npv: Math.round(npv),
+    min_dscr: Math.round(min_dscr*100)/100,
+    payback,
+    equity_in: Math.round(eq_in),
+    itc_proceeds: Math.round(itc_proc),
+    years,
+    flags
+  };
 }
 
 function calcIRR(cfs) {
@@ -990,4 +1021,4 @@ function exportExcel() {
 loadDeal('yarotek');
 </script>
 </body>
-</html> 
+</html>
